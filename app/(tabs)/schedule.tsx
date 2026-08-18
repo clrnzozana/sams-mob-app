@@ -273,7 +273,7 @@ export default function ScheduleScreen() {
 }
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#f9fafb' },
+    safeArea: { flex: 1, backgroundColor: '#003087' },
     header: { backgroundColor: '#003087', paddingHorizontal: 20, paddingTop: 6, paddingBottom: 16 },
     headerTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
     title: { fontFamily: 'Poppins_700Bold', fontSize: 19, color: '#fff' },
