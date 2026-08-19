@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { User, GraduationCap, Star, Trophy, Award, LogOut } from 'lucide-react-native';
+import NotificationBell from '@/components/NotificationBell';
 
 // Mock data — replace with real API data once the backend is ready
 const student = {
@@ -44,8 +45,13 @@ export default function ProfileScreen() {
             <StatusBar barStyle="light-content" backgroundColor="#003087" />
             <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>My Profile</Text>
-                    <Text style={styles.headerSub}>Manage your personal information and account settings</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <View style={{ flex: 1, paddingRight: 12 }}>
+                            <Text style={styles.title}>My Profile</Text>
+                            <Text style={styles.headerSub}>Manage your personal information and account settings</Text>
+                        </View>
+                        <NotificationBell unreadCount={2} />
+                    </View>
                 </View>
 
                 <View style={styles.body}>
@@ -216,7 +222,7 @@ export default function ProfileScreen() {
                                     </Text>
                                     <Text style={styles.achievementSub}>
                                         {student.missedDuties === 0
-                                            ? 'No missed duties recorded yet 🎉'
+                                            ? 'No missed duties recorded yet'
                                             : `You have ${student.missedDuties} missed duty log(s)`}
                                     </Text>
                                 </View>
