@@ -32,6 +32,9 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
+sams-backend/.env
+sams-backend/config.local.php
 
 # typescript
 *.tsbuildinfo

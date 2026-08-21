@@ -1,0 +1,89 @@
+# SAMS Capstone — Remaining Work Checklist
+
+Organized into two tracks so system work and paper/documentation work can move independently.
+
+---
+
+## A. SYSTEM (Mobile App + Backend)
+
+### A1. Backend — Authentication Layer
+- [x] Design the auth token (JWT vs. simple opaque token + DB-stored expiry)
+- [x] Build `POST /api/mobile/login` — verifies password, triggers OTP for students, returns a temporary "OTP pending" reference
+- [x] Build `POST /api/mobile/verify-otp` — validates the code, issues the real auth token on success
+- [x] Build `POST /api/mobile/change-password` — for the forced first-login password change
+- [x] Decide token expiry/refresh strategy
+
+### A2. Backend — Data Endpoints
+- [x] Extend `student_dashboard_snapshot.php` — add token-auth support + merge in `student_hours_summary` data
+- [ ] Build new `GET /api/mobile/schedule` — full duty list (only aggregated counts exist today)
+- [ ] Rebuild `respond_schedule.php` as a JSON-returning endpoint (currently browser-redirect only)
+- [ ] Build new `GET /api/mobile/profile` — nothing exists yet
+- [ ] Add token-auth support to `attendance_snapshot.php`
+- [ ] Add token-auth support to `announcements/list.php` + `mark_read.php`
+
+### A3. Mobile — Connect Screens to Real Data
+- [ ] Wire Login + OTP screens to the new token endpoints (replacing mock navigation)
+- [ ] Add secure token storage on-device (e.g. `expo-secure-store`)
+- [ ] Wire Dashboard, Schedule, Attendance, Profile, Announcements to real endpoints, replacing mock data
+- [ ] Align mock data field names/status values to the real schema during the swap (`'assigned'` not `'pending'`, add `'incomplete'` attendance status)
+
+### A4. Mobile — Screens Not Yet Built
+- [ ] Forgot Password flow (button exists, does nothing yet — backend has `password_reset_tokens` table ready)
+- [ ] Change Password screen (Profile has the button, no screen yet)
+- [ ] Wire up Profile's Download My Data / Privacy Settings (currently inert stubs)
+- [ ] Add the notification bell to Schedule, Attendance, and Profile tabs (only Dashboard has it so far)
+- [ ] Clean up leftover `modal.tsx` (unused Expo starter template file)
+
+### A5. Testing & Debugging
+- [ ] Test full auth flow end-to-end against the real backend: login → OTP → token → forced password change → Dashboard
+- [ ] Test Accept/Decline writing correctly to `duty_schedules` and reflecting immediately in the UI
+- [ ] Test token expiry/refresh behavior
+- [ ] Cross-check every screen's displayed data against actual database records for a real test student account
+- [ ] Test on both Android and iOS devices/emulators
+
+### A6. Final Polish
+- [ ] Final consistent styling pass across all screens now that real data is flowing
+- [ ] Handle empty/error states gracefully everywhere (no internet, empty schedule, failed login)
+- [ ] App icon, splash screen, and `app.json` metadata (name, version)
+- [ ] Version control hygiene (clean commits, README) if source code is reviewed/submitted
+
+### A7. Deployment/Demo Build
+- [ ] Build a standalone app (EAS Build or similar) for the actual defense demo — Expo Go isn't enough for a polished final presentation
+- [ ] Prepare demo data/test accounts that show the app in a realistic, good state
+
+---
+
+## B. DOCUMENTATION, EVALUATION & DEFENSE
+
+### B1. Outstanding Paper Sync Items
+- [ ] **OTP discrepancy**: paper says "new device only," real system triggers OTP on every student login — reword the paper to match reality, or have the web team add device-tracking to match the paper (decision needed)
+- [ ] Confirm with web teammates: is `duty_schedules.status` value `'rejected'` dead/legacy, since `respond_schedule.php` only ever writes `'declined'`?
+- [ ] Confirm with web teammates: is "Office Head" (documented in your paper's 4-tier role hierarchy) a real distinct role, or merged into `admin`/`supervisor` in the actual `users.role` column?
+
+### B2. Objective 6 — ISO/IEC 25010 Evaluation
+- [ ] Design an evaluation questionnaire/rubric covering the 5 stated characteristics: functional suitability, usability, performance efficiency, reliability, security
+- [ ] Recruit real evaluators (SDAO staff, supervisors, student assistants)
+- [ ] Run User Acceptance Testing (UAT) sessions
+- [ ] Collect and statistically summarize results (means, interpretation scale, etc.)
+- [ ] Write up the evaluation formally as its own section/chapter
+
+### B3. Remaining Paper Chapters
+- [ ] **Chapter 4 — Results and Discussion**: ISO 25010 evaluation results, testing outcomes, system screenshots
+- [ ] **Chapter 5 — Summary, Conclusion, and Recommendations**: findings, limitations, future work
+- [ ] **Appendices**: user manual, consent forms/questionnaires used, source code excerpts if required, raw survey data
+
+### B4. Defense Deliverables
+- [ ] Defense presentation slides (separate PPTX)
+- [ ] Live demo script/plan — what to show, in what order, with what test data
+- [ ] Adviser review and sign-off before defense
+- [ ] Confirm NU Lipa's specific formatting/submission requirements (binding, Turnitin/plagiarism check, required forms)
+
+### B5. Team Coordination
+- [ ] Coordinate with teammates on how mobile work integrates into the overall system demo
+- [ ] Decide who presents which part during the defense
+
+---
+
+## ⚠️ One Honest Caveat
+
+I don't know NU Lipa's specific capstone program requirements — some schools want a manuscript format vs. a full thesis format, some require a specific number of ISO 25010 evaluators, some use their own custom rubric instead of pure ISO/IEC 25010, and formatting/binding/submission rules vary by institution. **Confirm the exact requirements with your adviser directly** — this checklist covers what's implied by your own paper and system, not your program's exact administrative rules.
