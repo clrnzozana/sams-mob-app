@@ -10,7 +10,6 @@ export default function RootLayout() {
       <Stack.Screen name="otp-verification" />
       <Stack.Screen name="announcements" />
       <Stack.Screen name="(tabs)" />
-
     </Stack>
   );
 }
