@@ -15,20 +15,20 @@ Organized into two tracks so system work and paper/documentation work can move i
 
 ### A2. Backend — Data Endpoints
 - [x] Extend `student_dashboard_snapshot.php` — add token-auth support + merge in `student_hours_summary` data
-- [ ] Build new `GET /api/mobile/schedule` — full duty list (only aggregated counts exist today)
-- [ ] Rebuild `respond_schedule.php` as a JSON-returning endpoint (currently browser-redirect only)
-- [ ] Build new `GET /api/mobile/profile` — nothing exists yet
-- [ ] Add token-auth support to `attendance_snapshot.php`
-- [ ] Add token-auth support to `announcements/list.php` + `mark_read.php`
+- [x] Build new `GET /api/mobile/schedule` — full duty list (only aggregated counts exist today)
+- [x] Rebuild `respond_schedule.php` as a JSON-returning endpoint (currently browser-redirect only)
+- [x] Build new `GET /api/mobile/profile` — nothing exists yet
+- [x] Add token-auth support to `attendance_snapshot.php`
+- [x] Add token-auth support to `announcements/list.php` + `mark_read.php`
 
 ### A3. Mobile — Connect Screens to Real Data
-- [ ] Wire Login + OTP screens to the new token endpoints (replacing mock navigation)
-- [ ] Add secure token storage on-device (e.g. `expo-secure-store`)
-- [ ] Wire Dashboard, Schedule, Attendance, Profile, Announcements to real endpoints, replacing mock data
-- [ ] Align mock data field names/status values to the real schema during the swap (`'assigned'` not `'pending'`, add `'incomplete'` attendance status)
+- [x] Wire Login + OTP screens to the new token endpoints (replacing mock navigation)
+- [x] Add secure token storage on-device (e.g. `expo-secure-store`)
+- [x] Wire Dashboard, Schedule, Attendance, Profile, and Announcements to real endpoints, replacing mock data
+- [x] Align mock data field names/status values to the real schema during the swap (`'assigned'` not `'pending'`, add `'incomplete'` attendance status)
 
 ### A4. Mobile — Screens Not Yet Built
-- [ ] Forgot Password flow (button exists, does nothing yet — backend has `password_reset_tokens` table ready)
+- [ ] Forgot Password flow (request screen and reset-link request endpoint added; reset-link completion and mail delivery still need testing)
 - [ ] Change Password screen (Profile has the button, no screen yet)
 - [ ] Wire up Profile's Download My Data / Privacy Settings (currently inert stubs)
 - [ ] Add the notification bell to Schedule, Attendance, and Profile tabs (only Dashboard has it so far)

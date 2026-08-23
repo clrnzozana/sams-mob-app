@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../auth.php';
 require_once __DIR__ . '/../../database.php';
+require_once __DIR__ . '/../../cors.php';
+require_once __DIR__ . '/../../mailer.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -79,16 +81,23 @@ try {
     ]);
     $database->commit();
 
-    $sender = getenv('SAMS_OTP_FROM') ?: 'no-reply@sams.local';
-    $mailSent = mail(
+    $mailSent = mobileSendMail(
         $user['email'],
         'NU SAMS verification code',
-        "Your NU SAMS verification code is {$otpCode}. It expires in 10 minutes.",
-        "From: {$sender}\r\nContent-Type: text/plain; charset=UTF-8"
+        "Your NU SAMS verification code is {$otpCode}. It expires in 10 minutes."
     );
 
     if (!$mailSent) {
-        mobileLoginResponse(['error' => 'Unable to send verification code.'], 503);
+        if (getenv('SAMS_OTP_DEBUG') !== 'true') {
+            mobileLoginResponse(['error' => 'Unable to send verification code.'], 503);
+        }
+
+        mobileLoginResponse([
+            'otp_pending' => true,
+            'challenge_id' => $challengeId,
+            'expires_in' => 600,
+            'debug_otp' => $otpCode,
+        ]);
     }
 
     mobileLoginResponse([
