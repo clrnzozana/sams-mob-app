@@ -55,7 +55,7 @@ try {
 		]);
 		$database->commit();
 
-		$resetUrl = getenv('SAMS_PASSWORD_RESET_URL') ?: 'http://localhost/sams-backend/reset-password.php?token=' . $token;
+		$resetUrl = getenv('SAMS_PASSWORD_RESET_URL') ?: 'samsmobile://reset-password?token=' . $token;
 		if (!mobileSendMail(
 			$user['email'],
 			'NU SAMS password reset',

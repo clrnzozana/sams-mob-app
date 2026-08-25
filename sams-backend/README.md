@@ -14,6 +14,7 @@ The authentication endpoints are:
 - `POST /api/mobile/verify-otp.php`
 - `POST /api/mobile/change-password.php`
 - `POST /api/mobile/request-password-reset.php` with `{ "email": "student@example.com" }`
+- `POST /api/mobile/reset-password.php` with `{ "token": "...", "new_password": "..." }`
 
 The authenticated schedule endpoint is:
 

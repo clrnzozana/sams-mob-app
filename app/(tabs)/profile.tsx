@@ -189,7 +189,10 @@ export default function ProfileScreen() {
                 >
                   <Text style={styles.primaryBtnText}>View Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.outlineBtn}>
+                <TouchableOpacity
+                  style={styles.outlineBtn}
+                  onPress={() => router.push("/change-password" as never)}
+                >
                   <Text style={styles.outlineBtnText}>Change Password</Text>
                 </TouchableOpacity>
               </View>

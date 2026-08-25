@@ -73,15 +73,19 @@ export default function OtpVerificationScreen() {
     setIsSubmitting(true);
 
     try {
-      const result = await apiRequest<{ token: string }>(
-        "/api/mobile/verify-otp.php",
-        {
-          method: "POST",
-          body: JSON.stringify({ challenge_id: challengeId, code }),
-        },
-      );
+      const result = await apiRequest<{
+        token: string;
+        must_change_password?: boolean;
+      }>("/api/mobile/verify-otp.php", {
+        method: "POST",
+        body: JSON.stringify({ challenge_id: challengeId, code }),
+      });
       await saveAuthToken(result.token);
-      router.replace("/(tabs)/dashboard");
+      router.replace(
+        result.must_change_password
+          ? ("/change-password" as never)
+          : "/(tabs)/dashboard",
+      );
     } catch (requestError) {
       setError(
         requestError instanceof Error

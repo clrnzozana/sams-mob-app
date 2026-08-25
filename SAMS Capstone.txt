@@ -28,8 +28,8 @@ Organized into two tracks so system work and paper/documentation work can move i
 - [x] Align mock data field names/status values to the real schema during the swap (`'assigned'` not `'pending'`, add `'incomplete'` attendance status)
 
 ### A4. Mobile — Screens Not Yet Built
-- [ ] Forgot Password flow (request screen and reset-link request endpoint added; reset-link completion and mail delivery still need testing)
-- [ ] Change Password screen (Profile has the button, no screen yet)
+- [x] Forgot Password flow (request screen, token completion endpoint, and mobile reset deep link; real SMTP delivery remains environment testing)
+- [x] Change Password screen (Profile button and forced first-login flow)
 - [ ] Wire up Profile's Download My Data / Privacy Settings (currently inert stubs)
 - [ ] Add the notification bell to Schedule, Attendance, and Profile tabs (only Dashboard has it so far)
 - [ ] Clean up leftover `modal.tsx` (unused Expo starter template file)

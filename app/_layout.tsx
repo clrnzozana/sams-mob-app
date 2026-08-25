@@ -1,5 +1,5 @@
-import React from 'react';
-import { Stack } from 'expo-router';
+import { Stack } from "expo-router";
+import React from "react";
 
 export default function RootLayout() {
   return (
@@ -8,6 +8,8 @@ export default function RootLayout() {
       <Stack.Screen name="landingpage" />
       <Stack.Screen name="login" />
       <Stack.Screen name="otp-verification" />
+      <Stack.Screen name="change-password" />
+      <Stack.Screen name="reset-password" />
       <Stack.Screen name="announcements" />
       <Stack.Screen name="(tabs)" />
     </Stack>
