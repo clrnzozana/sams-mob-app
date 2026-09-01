@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
+    "start-backend": "cd sams-backend && php -S 0.0.0.0:8000",
+    "setup-backend": "cd sams-backend && (if not exist .env copy .env.example .env) && start notepad .env",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",

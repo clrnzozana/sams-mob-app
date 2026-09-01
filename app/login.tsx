@@ -214,11 +214,14 @@ export default function LoginScreen() {
             <View style={styles.noteBox}>
               <View style={styles.noteHeader}>
                 <Info size={15} color="#003087" />
-                <Text style={styles.noteTitle}>First time logging in?</Text>
+                <Text style={styles.noteTitle}>
+                  Email Verification Required
+                </Text>
               </View>
               <Text style={styles.noteText}>
-                Use your registered university email and Student ID number as
-                your default password. You will be prompted to verify via OTP.
+                After entering your credentials, you&apos;ll receive a 6-digit
+                verification code at your registered email address. This step is
+                required for every login to keep your account secure.
               </Text>
             </View>
           </View>

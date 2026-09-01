@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/../../env.php';
 require_once __DIR__ . '/../../auth.php';
 require_once __DIR__ . '/../../database.php';
 require_once __DIR__ . '/../../cors.php';
@@ -34,6 +35,51 @@ if (!preg_match('/^[a-f0-9]{64}$/i', $challengeId) || !preg_match('/^\d{6}$/', $
 
 try {
     $database = mobileDatabase();
+    // First check if challenge exists (expired or used)
+    $checkStatement = $database->prepare(
+        'SELECT c.challenge_id, c.user_id, c.code_hash, c.expires_at, c.used_at, c.attempts
+         FROM mobile_otp_challenges c
+         WHERE c.challenge_id = :challenge_id
+         LIMIT 1'
+    );
+    $checkStatement->execute([':challenge_id' => $challengeId]);
+    $existingChallenge = $checkStatement->fetch();
+    
+    // Challenge doesn't exist
+    if ($existingChallenge === false) {
+        mobileVerifyOtpResponse([
+            'error' => 'This verification code does not exist. Please log in again.',
+            'type' => 'invalid_challenge'
+        ], 401);
+    }
+    
+    // Challenge already used
+    if ($existingChallenge['used_at'] !== null) {
+        mobileVerifyOtpResponse([
+            'error' => 'This verification code has already been used. Please log in again.',
+            'type' => 'code_already_used'
+        ], 401);
+    }
+    
+    // Challenge expired
+    if (strtotime($existingChallenge['expires_at']) <= time()) {
+        mobileVerifyOtpResponse([
+            'error' => 'This verification code has expired. Please request a new one by logging in again.',
+            'type' => 'code_expired',
+            'expires_at' => $existingChallenge['expires_at'],
+            'current_time' => (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')
+        ], 401);
+    }
+    
+    // Too many attempts
+    if ((int) $existingChallenge['attempts'] >= 5) {
+        mobileVerifyOtpResponse([
+            'error' => 'Too many failed attempts. Please log in again to request a new code.',
+            'type' => 'too_many_attempts'
+        ], 401);
+    }
+    
+    // Now get the full challenge with user info
     $statement = $database->prepare(
         'SELECT c.challenge_id, c.user_id, c.code_hash, u.must_change_password
          FROM mobile_otp_challenges c
@@ -49,7 +95,10 @@ try {
     $challenge = $statement->fetch();
 
     if ($challenge === false) {
-        mobileVerifyOtpResponse(['error' => 'Invalid or expired verification code.'], 401);
+        mobileVerifyOtpResponse([
+            'error' => 'Invalid or expired verification code.',
+            'type' => 'invalid_or_expired'
+        ], 401);
     }
 
     $codeHash = hash('sha256', $otpCode);

@@ -10,8 +10,9 @@
 
 The authentication endpoints are:
 
-- `POST /api/mobile/login.php`
-- `POST /api/mobile/verify-otp.php`
+- `POST /api/mobile/login.php` — returns `{ otp_pending: true, challenge_id: "..." }` for students, requiring OTP verification
+- `POST /api/mobile/verify-otp.php` with `{ "challenge_id": "...", "code": "123456" }` — returns auth token on success
+- `POST /api/mobile/resend-otp.php` with `{ "challenge_id": "..." }` — resends the OTP code to the user's email
 - `POST /api/mobile/change-password.php`
 - `POST /api/mobile/request-password-reset.php` with `{ "email": "student@example.com" }`
 - `POST /api/mobile/reset-password.php` with `{ "token": "...", "new_password": "..." }`
@@ -30,5 +31,7 @@ Email delivery uses PHPMailer over authenticated SMTP. Configure `SAMS_SMTP_HOST
 For local-only testing when SMTP is unavailable, set `SAMS_OTP_DEBUG` to `true` in Apache. The login response will include `debug_otp`; disable this setting before any shared or production deployment.
 
 ## Authentication policy
+
+**OTP Flow:** Every student login requires email-based OTP verification. After validating email and password, the login endpoint returns a challenge ID and the OTP is sent to the student's registered email. The student then calls verify-otp with the 6-digit code to receive the final auth token.
 
 Mobile sessions use random opaque tokens stored as SHA-256 hashes in `mobile_auth_sessions`. Sessions expire after seven days and are revoked when the password changes. There is no refresh-token endpoint yet; an expired session requires a new login and OTP verification.

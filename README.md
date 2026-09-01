@@ -1,50 +1,110 @@
-# Welcome to your Expo app 👋
+# SAMS Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+NU Student Assistants Management System — React Native mobile app built with Expo.
 
-## Get started
+## Quick Setup
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Install mobile dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Start the backend server (in a separate terminal)
 
-## Learn more
+```bash
+npm run start-backend
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+This starts a PHP development server at `http://localhost:8000` (accessible as `http://192.168.1.7:8000` on the network).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 3. Start the mobile app
 
-## Join the community
+```bash
+npm start
+```
 
-Join our community of developers creating universal apps.
+Then press:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `a` for Android emulator
+- `i` for iOS simulator
+- `w` for web
+- `j` to open debugger
+
+## Backend Setup
+
+The mobile app requires the `sams-backend` PHP server to be running.
+
+### Option A: PHP Built-in Server (Easiest for Development)
+
+```bash
+npm run start-backend
+```
+
+- Server runs at `http://localhost:8000`
+- Accessible on network as `http://192.168.1.7:8000`
+- No additional software needed
+
+### Option B: Apache/Nginx (For Production)
+
+1. Configure a virtual host or alias for `sams-backend` folder
+2. Ensure PHP is installed and enabled
+3. Update `constants/api.ts` to use: `http://192.168.1.7/sams-backend`
+
+## Network Configuration
+
+The app is configured to connect to: **http://192.168.1.7:8000**
+
+If your machine's IP is different, update [constants/api.ts](constants/api.ts):
+
+```typescript
+export const API_BASE_URL = "http://YOUR_IP:8000";
+```
+
+To find your IP on Windows:
+
+```powershell
+ipconfig
+# Look for "IPv4 Address" (usually 192.168.x.x or 10.x.x.x)
+```
+
+## Testing on Physical Device
+
+1. Ensure phone and development machine are on the same WiFi network
+2. Backend server must be running: `npm run start-backend`
+3. Update API URL in `constants/api.ts` to your actual machine IP
+4. In Expo, scan the QR code from your phone
+
+## Troubleshooting
+
+### Network Timeout Error
+
+See [NETWORK_TROUBLESHOOTING.md](NETWORK_TROUBLESHOOTING.md) for detailed diagnostics and solutions.
+
+### Backend Not Accessible
+
+1. Verify PHP is installed: `php --version`
+2. Backend server is running: `npm run start-backend`
+3. Firewall allows port 8000
+4. Phone/emulator can reach your machine's IP
+
+## Environment Variables
+
+Backend configuration is in `sams-backend/.env` (copy from `.env.example`):
+
+- `SAMS_SMTP_HOST`, `SAMS_SMTP_PORT`, `SAMS_SMTP_USER`, `SAMS_SMTP_PASSWORD` — email settings
+- `SAMS_SMTP_FROM` — sender email address
+- `SAMS_OTP_DEBUG` — set to `true` to skip SMTP and return test codes
+
+## Development
+
+- **Mobile code:** `app/` directory (Expo Router file-based routing)
+- **Backend code:** `sams-backend/` directory (PHP)
+- **Styles:** Inline StyleSheets (React Native)
+- **Icons:** [lucide-react-native](https://lucide.dev)
+
+## Learn More
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native](https://reactnative.dev/)
+- [File-based routing](https://docs.expo.dev/router/introduction/)

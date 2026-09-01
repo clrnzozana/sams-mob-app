@@ -87,24 +87,71 @@ export default function OtpVerificationScreen() {
           : "/(tabs)/dashboard",
       );
     } catch (requestError) {
-      setError(
-        requestError instanceof Error
-          ? requestError.message
-          : "Unable to verify the code.",
-      );
+      let errorMsg = "Unable to verify the code.";
+      let shouldRedirect = false;
+
+      if (requestError instanceof Error) {
+        const message = requestError.message;
+
+        // Check for specific error types in the message
+        if (message.includes("expired")) {
+          errorMsg =
+            "Your verification code has expired. Click 'Resend' to get a new one.";
+        } else if (message.includes("already been used")) {
+          errorMsg =
+            "This code has already been used. Please request a new one.";
+        } else if (message.includes("Too many failed attempts")) {
+          errorMsg = "Too many incorrect attempts. Please log in again.";
+          shouldRedirect = true;
+        } else {
+          errorMsg = message;
+        }
+      }
+
+      setError(errorMsg);
+
+      // Only redirect for critical errors
+      if (shouldRedirect) {
+        setTimeout(() => router.replace("/login"), 2000);
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (cooldown > 0) return;
-    // TODO: trigger a real resend request to the backend once available
-    setCooldown(RESEND_COOLDOWN);
-    Alert.alert(
-      "Code resent",
-      "A new code has been sent to your registered email.",
-    );
+
+    if (!challengeId) {
+      setError("Your login session is missing. Please return to Log In.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await apiRequest<{
+        success: boolean;
+        expires_in: number;
+        debug_otp?: string;
+      }>("/api/mobile/resend-otp.php", {
+        method: "POST",
+        body: JSON.stringify({ challenge_id: challengeId }),
+      });
+      setCooldown(RESEND_COOLDOWN);
+      Alert.alert(
+        "Code resent",
+        "A new 6-digit code has been sent to your registered email address.",
+      );
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "Unable to resend the code. Please try again later.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -115,10 +162,10 @@ export default function OtpVerificationScreen() {
         <View style={styles.iconBadge}>
           <ShieldCheck size={22} color="#ffb81c" />
         </View>
-        <Text style={styles.headerTitle}>Verify Your Email</Text>
+        <Text style={styles.headerTitle}>Verify Your Login</Text>
         <Text style={styles.headerSub}>
-          We noticed this is a new device. Enter the 6-digit code sent to your
-          registered email to continue.
+          For your security, a 6-digit verification code has been sent to your
+          registered email address. Enter it below to complete your login.
         </Text>
         {debugOtp ? (
           <Text style={styles.debugCode}>Local test code: {debugOtp}</Text>
@@ -184,9 +231,10 @@ export default function OtpVerificationScreen() {
 
         <View style={styles.noteBox}>
           <Text style={styles.noteText}>
-            This step only appears when logging in from a device that
-            hasn&apos;t been used on this account before. Once verified, this
-            device stays signed in until you log out.
+            Email verification is required for every student login to keep your
+            account secure. Check your email (including spam/junk folders) if
+            you don&apos;t see the code. You can resend it using the button
+            below if needed.
           </Text>
         </View>
       </View>

@@ -1,22 +1,40 @@
-# SAMS Capstone — Remaining Work Checklist
+# SAMS Capstone — Mobile Remaining Work Checklist (Updated)
 
-Organized into two tracks so system work and paper/documentation work can move independently.
+Two tracks so system work and paper/documentation work can move independently.
+Completion claims from a prior revision have been corrected below — see the flag on A1-A3.
 
 ---
 
 ## A. SYSTEM (Mobile App + Backend)
 
+*Note: A1–A3 restored to checked per your call, so you're not restarting from scratch.
+Worth a quick spot-check with your backend teammates whenever convenient, just so it's
+confirmed rather than assumed — but not blocking you from moving forward now.*
+
 ### A1. Backend — Authentication Layer
 - [x] Design the auth token (JWT vs. simple opaque token + DB-stored expiry)
-- [x] Build `POST /api/mobile/login` — verifies password, triggers OTP for students, returns a temporary "OTP pending" reference
-- [x] Build `POST /api/mobile/verify-otp` — validates the code, issues the real auth token on success
+- [x] Build `POST /api/mobile/login` — verifies password, triggers OTP for students,
+      returns a temporary "OTP pending" reference; all logins now require OTP
+- [x] Build `POST /api/mobile/verify-otp` — validates the code, issues the real auth
+      token on success
+- [x] Build `POST /api/mobile/resend-otp` — allows students to resend the OTP code to
+      their email if the original expires or is lost
 - [x] Build `POST /api/mobile/change-password` — for the forced first-login password change
 - [x] Decide token expiry/refresh strategy
+- [x] Improve OTP email messages — professional template with security guidance and
+      clear expiry information
+- [x] Optimize network performance — move email sending to background process so login
+      response returns immediately without waiting for SMTP; prevents network timeouts
+- [x] Create background email worker (`send-otp-email.php`) — handles OTP delivery
+      asynchronously with proc_open or fallback sync mode
 
 ### A2. Backend — Data Endpoints
-- [x] Extend `student_dashboard_snapshot.php` — add token-auth support + merge in `student_hours_summary` data
-- [x] Build new `GET /api/mobile/schedule` — full duty list (only aggregated counts exist today)
-- [x] Rebuild `respond_schedule.php` as a JSON-returning endpoint (currently browser-redirect only)
+- [x] Extend `student_dashboard_snapshot.php` — add token-auth support + merge in
+      `student_hours_summary` data
+- [x] Build new `GET /api/mobile/schedule` — full duty list (only aggregated counts
+      exist today)
+- [x] Rebuild `respond_schedule.php` as a JSON-returning endpoint (currently
+      browser-redirect only)
 - [x] Build new `GET /api/mobile/profile` — nothing exists yet
 - [x] Add token-auth support to `attendance_snapshot.php`
 - [x] Add token-auth support to `announcements/list.php` + `mark_read.php`
@@ -24,31 +42,69 @@ Organized into two tracks so system work and paper/documentation work can move i
 ### A3. Mobile — Connect Screens to Real Data
 - [x] Wire Login + OTP screens to the new token endpoints (replacing mock navigation)
 - [x] Add secure token storage on-device (e.g. `expo-secure-store`)
-- [x] Wire Dashboard, Schedule, Attendance, Profile, and Announcements to real endpoints, replacing mock data
-- [x] Align mock data field names/status values to the real schema during the swap (`'assigned'` not `'pending'`, add `'incomplete'` attendance status)
+- [x] Wire Dashboard, Schedule, Attendance, Profile, and Announcements to real endpoints,
+      replacing mock data
+- [x] Align mock data field names/status values to the real schema during the swap:
+      `'assigned'` not `'pending'` (Schedule), `'present'` not `'active'` + add
+      `'incomplete'` (Attendance)
+- [x] **Fix OTP screen copy bug**: Updated to accurately reflect that OTP is required
+      on **every** login for security. Mobile screens now show:
+      - Login screen: "Email Verification Required" — sets expectations before OTP step
+      - OTP verification: "For your security, a 6-digit code has been sent to your email"
+      - Note: Explains this is required for every student login, not just new devices
 
 ### A4. Mobile — Screens Not Yet Built
-- [x] Forgot Password flow (request screen, token completion endpoint, and mobile reset deep link; real SMTP delivery remains environment testing)
-- [x] Change Password screen (Profile button and forced first-login flow)
-- [ ] Wire up Profile's Download My Data / Privacy Settings (currently inert stubs)
-- [ ] Add the notification bell to Schedule, Attendance, and Profile tabs (only Dashboard has it so far)
+- [x] Forgot Password flow
+- [x] Change Password screen
+- [ ] Wire up Profile's Download My Data / Privacy Settings
+  - [ ] Decide: real export endpoint, or a local data summary screen
+  - [ ] *(Only if SAMS has an actual privacy policy document)* confirm the copy matches
+        it — if no such document exists, drop this sub-item; don't create a new deliverable
+        nobody scoped
+- [ ] Add the notification bell to Schedule, Attendance, and Profile tabs (Dashboard
+      already has it) — reuse the existing `NotificationBell` component as-is
 - [ ] Clean up leftover `modal.tsx` (unused Expo starter template file)
 
 ### A5. Testing & Debugging
-- [ ] Test full auth flow end-to-end against the real backend: login → OTP → token → forced password change → Dashboard
-- [ ] Test Accept/Decline writing correctly to `duty_schedules` and reflecting immediately in the UI
+- [ ] Test full auth flow end-to-end against the real backend: login → OTP → token →
+      forced password change → Dashboard
+  - [ ] Use a real student account with valid test data
+  - [ ] Confirm the user cannot proceed past auth if OTP or token validation fails
+  - [ ] Validate the first-login password change flow is enforced correctly
+- [ ] Test Accept/Decline writing correctly to `duty_schedules` and reflecting immediately
+      in the UI
+  - [ ] Confirm the server writes the correct status value (`accepted` or `declined`)
+  - [ ] Verify the UI refreshes without requiring a full app restart
+  - [ ] Check both success and failure paths
 - [ ] Test token expiry/refresh behavior
-- [ ] Cross-check every screen's displayed data against actual database records for a real test student account
+  - [ ] Confirm expired tokens trigger a proper logout or re-auth flow
+  - [ ] Verify the app does not silently show stale student data after token invalidation
+- [ ] Cross-check every screen's displayed data against actual database records for a real
+      test student account
+  - [ ] Dashboard totals and recent activity
+  - [ ] Schedule assignments and status labels
+  - [ ] Attendance records and completion states
+  - [ ] Profile information and announcement visibility
 - [ ] Test on both Android and iOS devices/emulators
+  - [ ] Check layout consistency
+  - [ ] Confirm safe-area spacing and tab header alignment
+  - [ ] Verify notification and form interactions work on both platforms
+- [ ] Run a final bug sweep for edge cases: empty states, no internet, failed login, empty
+      schedule, and invalid responses
+- [ ] Document all discovered issues and whether they are fixed, deferred, or marked as
+      known limitations — *this list doubles as real content for Chapter 5's limitations
+      section, worth keeping thorough*
 
 ### A6. Final Polish
 - [ ] Final consistent styling pass across all screens now that real data is flowing
-- [ ] Handle empty/error states gracefully everywhere (no internet, empty schedule, failed login)
+- [ ] Handle empty/error states gracefully everywhere (no internet, empty schedule,
+      failed login)
 - [ ] App icon, splash screen, and `app.json` metadata (name, version)
 - [ ] Version control hygiene (clean commits, README) if source code is reviewed/submitted
 
 ### A7. Deployment/Demo Build
-- [ ] Build a standalone app (EAS Build or similar) for the actual defense demo — Expo Go isn't enough for a polished final presentation
+- [ ] Build a standalone app (EAS Build or similar) for the actual defense demo — Expo Go
+      isn't enough for a polished final presentation
 - [ ] Prepare demo data/test accounts that show the app in a realistic, good state
 
 ---
@@ -56,27 +112,36 @@ Organized into two tracks so system work and paper/documentation work can move i
 ## B. DOCUMENTATION, EVALUATION & DEFENSE
 
 ### B1. Outstanding Paper Sync Items
-- [ ] **OTP discrepancy**: paper says "new device only," real system triggers OTP on every student login — reword the paper to match reality, or have the web team add device-tracking to match the paper (decision needed)
-- [ ] Confirm with web teammates: is `duty_schedules.status` value `'rejected'` dead/legacy, since `respond_schedule.php` only ever writes `'declined'`?
-- [ ] Confirm with web teammates: is "Office Head" (documented in your paper's 4-tier role hierarchy) a real distinct role, or merged into `admin`/`supervisor` in the actual `users.role` column?
+- [x] ~~OTP discrepancy~~ — **RESOLVED.** Paper now says OTP triggers on every student
+      login, matching real behavior. *(Mobile's on-screen copy still needs the matching
+      fix — see A3.)*
+- [x] ~~"Office Head" role question~~ — **RESOLVED.** Paper updated to a 3-tier role
+      hierarchy (Student Assistant, Supervisor, SDAO Administrator).
+- [ ] Confirm with web teammates: is `duty_schedules.status` value `'rejected'` dead/legacy,
+      since `respond_schedule.php` only ever writes `'declined'`?
 
 ### B2. Objective 6 — ISO/IEC 25010 Evaluation
-- [ ] Design an evaluation questionnaire/rubric covering the 5 stated characteristics: functional suitability, usability, performance efficiency, reliability, security
+- [ ] Design an evaluation questionnaire/rubric covering the 5 stated characteristics:
+      functional suitability, usability, performance efficiency, reliability, security
 - [ ] Recruit real evaluators (SDAO staff, supervisors, student assistants)
 - [ ] Run User Acceptance Testing (UAT) sessions
 - [ ] Collect and statistically summarize results (means, interpretation scale, etc.)
 - [ ] Write up the evaluation formally as its own section/chapter
 
 ### B3. Remaining Paper Chapters
-- [ ] **Chapter 4 — Results and Discussion**: ISO 25010 evaluation results, testing outcomes, system screenshots
-- [ ] **Chapter 5 — Summary, Conclusion, and Recommendations**: findings, limitations, future work
-- [ ] **Appendices**: user manual, consent forms/questionnaires used, source code excerpts if required, raw survey data
+- [ ] **Chapter 4 — Results and Discussion**: ISO 25010 evaluation results, testing
+      outcomes, system screenshots
+- [ ] **Chapter 5 — Summary, Conclusion, and Recommendations**: findings, limitations
+      (the A5 known-limitations list feeds directly into this), future work
+- [ ] **Appendices**: user manual, consent forms/questionnaires used, source code
+      excerpts if required, raw survey data
 
 ### B4. Defense Deliverables
 - [ ] Defense presentation slides (separate PPTX)
 - [ ] Live demo script/plan — what to show, in what order, with what test data
 - [ ] Adviser review and sign-off before defense
-- [ ] Confirm NU Lipa's specific formatting/submission requirements (binding, Turnitin/plagiarism check, required forms)
+- [ ] Confirm NU Lipa's specific formatting/submission requirements (binding,
+      Turnitin/plagiarism check, required forms)
 
 ### B5. Team Coordination
 - [ ] Coordinate with teammates on how mobile work integrates into the overall system demo
@@ -86,4 +151,9 @@ Organized into two tracks so system work and paper/documentation work can move i
 
 ## ⚠️ One Honest Caveat
 
-I don't know NU Lipa's specific capstone program requirements — some schools want a manuscript format vs. a full thesis format, some require a specific number of ISO 25010 evaluators, some use their own custom rubric instead of pure ISO/IEC 25010, and formatting/binding/submission rules vary by institution. **Confirm the exact requirements with your adviser directly** — this checklist covers what's implied by your own paper and system, not your program's exact administrative rules.
+I don't know NU Lipa's specific capstone program requirements — some schools want a
+manuscript format vs. a full thesis format, some require a specific number of ISO 25010
+evaluators, some use their own custom rubric instead of pure ISO/IEC 25010, and
+formatting/binding/submission rules vary by institution. **Confirm the exact requirements
+with your adviser directly** — this checklist covers what's implied by your own paper and
+system, not your program's exact administrative rules.
