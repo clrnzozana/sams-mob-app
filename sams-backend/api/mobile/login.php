@@ -77,7 +77,7 @@ try {
     )->execute([
         ':challenge_id' => $challengeId,
         ':user_id' => $user['user_id'],
-        ':code_hash' => hash('sha256', $otpCode),
+        ':code_hash' => password_hash($otpCode, PASSWORD_DEFAULT),
         ':expires_at' => $expiresAt,
     ]);
     $database->commit();

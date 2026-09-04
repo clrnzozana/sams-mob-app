@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/../../env.php';
 require_once __DIR__ . '/../../auth.php';
 require_once __DIR__ . '/../../database.php';
 require_once __DIR__ . '/../../cors.php';
@@ -52,9 +53,7 @@ try {
         mobileVerifyOtpResponse(['error' => 'Invalid or expired verification code.'], 401);
     }
 
-    $codeHash = hash('sha256', $otpCode);
-
-    if (!hash_equals($challenge['code_hash'], $codeHash)) {
+    if (!password_verify($otpCode, $challenge['code_hash'])) {
         $database->prepare(
             'UPDATE mobile_otp_challenges
              SET attempts = attempts + 1

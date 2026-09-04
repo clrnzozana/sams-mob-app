@@ -120,9 +120,6 @@ export default function OtpVerificationScreen() {
           We noticed this is a new device. Enter the 6-digit code sent to your
           registered email to continue.
         </Text>
-        {debugOtp ? (
-          <Text style={styles.debugCode}>Local test code: {debugOtp}</Text>
-        ) : null}
       </View>
 
       <View style={styles.body}>

@@ -10,16 +10,27 @@ function mobileSendMail(string $recipient, string $subject, string $body): bool
 {
     try {
         $mailer = new PHPMailer(true);
-        $mailer->isSMTP();
-        $mailer->Host = getenv('SAMS_SMTP_HOST') ?: 'smtp.gmail.com';
-        $mailer->Port = (int) (getenv('SAMS_SMTP_PORT') ?: 587);
-        $mailer->SMTPAuth = true;
-        $mailer->Username = getenv('SAMS_SMTP_USER') ?: '';
-        $mailer->Password = getenv('SAMS_SMTP_PASSWORD') ?: '';
-        $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $username = getenv('SAMS_SMTP_USER') ?: '';
+        if ($username === '') {
+            error_log('[sams] SMTP username missing — falling back to PHP mail()');
+            $mailer->isMail();
+        } else {
+            $mailer->isSMTP();
+            $mailer->Host = getenv('SAMS_SMTP_HOST') ?: 'smtp.gmail.com';
+            $mailer->Port = (int) (getenv('SAMS_SMTP_PORT') ?: 587);
+            $mailer->SMTPAuth = true;
+            $mailer->Username = $username;
+            $mailer->Password = getenv('SAMS_SMTP_PASSWORD') ?: '';
+            $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        }
         $mailer->CharSet = 'UTF-8';
+        $fromEmail = getenv('SAMS_SMTP_FROM');
+        if (empty($fromEmail)) {
+            $fromEmail = !empty($username) ? $username : 'noreply@localhost';
+        }
+
         $mailer->setFrom(
-            getenv('SAMS_SMTP_FROM') ?: $mailer->Username,
+            $fromEmail,
             getenv('SAMS_SMTP_FROM_NAME') ?: 'NU SAMS'
         );
         $mailer->addAddress($recipient);

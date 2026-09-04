@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/env.php';
+
 function mobileDatabase(): PDO
 {
     $host = getenv('SAMS_DB_HOST') ?: '127.0.0.1';
