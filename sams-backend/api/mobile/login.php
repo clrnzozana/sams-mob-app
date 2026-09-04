@@ -49,20 +49,17 @@ try {
         mobileLoginResponse(['error' => 'Invalid credentials.'], 401);
     }
 
-    // All users now require OTP verification for security
-    // This includes admin and supervisor roles as well
-    // if ($user['role'] !== 'student') {
-    //     mobileLoginResponse([
-    //         'token' => mobileCreateAuthSession($database, (int) $user['user_id']),
-    //         'must_change_password' => (bool) $user['must_change_password'],
-    //     ]);
-    // }
+    if ($user['role'] !== 'student') {
+        mobileLoginResponse([
+            'token' => mobileCreateAuthSession($database, (int) $user['user_id']),
+            'must_change_password' => (bool) $user['must_change_password'],
+        ]);
+    }
 
     $challengeId = bin2hex(random_bytes(32));
     $otpCode = (string) random_int(100000, 999999);
-    // OTP valid for 15 minutes (was 10, extending for better UX)
     $expiresAt = (new DateTimeImmutable('now', new DateTimeZone('UTC')))
-        ->modify('+15 minutes')
+        ->modify('+10 minutes')
         ->format('Y-m-d H:i:s');
 
     $database->beginTransaction();
@@ -85,86 +82,35 @@ try {
     ]);
     $database->commit();
 
-    // Send email asynchronously in background to avoid blocking the login response
-    // This allows the app to receive the OTP challenge immediately while the email
-    // is queued/sent in the background
-    $emailBody = "Hello,\n\n"
-        . "Someone just tried to log into your NU SAMS account. To verify this is you, enter this code:\n\n"
-        . "Verification Code: {$otpCode}\n\n"
-        . "This code will expire in 10 minutes.\n\n"
-        . "If you did not attempt to log in, you can safely ignore this email. Your account is secure.\n\n"
-        . "For security reasons, NU SAMS will never ask for your verification code via phone, email, or chat. Do not share this code with anyone.\n\n"
-        . "Best regards,\n"
-        . "NU SAMS Security Team";
+    $mailSent = mobileSendMail(
+        $user['email'],
+        'NU SAMS verification code',
+        "Your NU SAMS verification code is {$otpCode}. It expires in 10 minutes."
+    );
 
-    // Queue email to send in background (non-blocking)
-    // In production, this would use a job queue; for now, we attempt async send
-    if (function_exists('proc_open')) {
-        $mailScript = __DIR__ . '/../../send-otp-email.php';
-        $cmd = sprintf(
-            'php %s %s %s %s %s',
-            escapeshellarg($mailScript),
-            escapeshellarg($user['email']),
-            escapeshellarg('NU SAMS Email Verification Code'),
-            escapeshellarg($emailBody),
-            escapeshellarg(getenv('SAMS_OTP_DEBUG') === 'true' ? '1' : '0')
-        );
-        // Non-blocking process spawn
-        $proc = proc_open($cmd, [], $pipes, null, null);
-        if (is_resource($proc)) {
-            proc_close($proc);
+    if (!$mailSent) {
+        if (getenv('SAMS_OTP_DEBUG') !== 'true') {
+            mobileLoginResponse(['error' => 'Unable to send verification code.'], 503);
         }
-    } else {
-        // Fallback: try to send synchronously (PHP without proc_open support)
-        mobileSendMail(
-            $user['email'],
-            'NU SAMS Email Verification Code',
-            $emailBody
-        );
+
+        mobileLoginResponse([
+            'otp_pending' => true,
+            'challenge_id' => $challengeId,
+            'expires_in' => 600,
+            'debug_otp' => $otpCode,
+        ]);
     }
 
-    // Return OTP challenge immediately without waiting for email delivery
     mobileLoginResponse([
         'otp_pending' => true,
         'challenge_id' => $challengeId,
         'expires_in' => 600,
-        // Only include debug code if explicitly enabled and in debug mode
-        ...(getenv('SAMS_OTP_DEBUG') === 'true' ? ['debug_otp' => $otpCode] : []),
     ]);
-} catch (RuntimeException $error) {
-    // Database credentials or environment configuration error
-    error_log('Database Config Error: ' . $error->getMessage());
-    mobileLoginResponse([
-        'error' => $error->getMessage(),
-        'type' => 'configuration_error',
-    ], 500);
-} catch (PDOException $error) {
-    // Database connection error
-    if (isset($database) && $database->inTransaction()) {
-        try {
-            $database->rollBack();
-        } catch (Throwable) {
-            // Ignore rollback errors
-        }
-    }
-    error_log('Database Connection Error: ' . $error->getMessage());
-    mobileLoginResponse([
-        'error' => $error->getMessage(),
-        'type' => 'database_connection_error',
-    ], 503);
 } catch (Throwable $error) {
-    // Any other error (OTP processing, email, etc.)
     if (isset($database) && $database->inTransaction()) {
-        try {
-            $database->rollBack();
-        } catch (Throwable) {
-            // Ignore rollback errors
-        }
+        $database->rollBack();
     }
-    error_log('Login Error: ' . $error->getMessage());
-    mobileLoginResponse([
-        'error' => 'An unexpected error occurred. Please try again.',
-        'type' => 'unknown_error',
-        'debug_message' => $error->getMessage(),
-    ], 500);
+
+    error_log($error->getMessage());
+    mobileLoginResponse(['error' => 'Authentication service unavailable.'], 500);
 }

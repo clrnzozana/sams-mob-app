@@ -14,19 +14,11 @@ confirmed rather than assumed — but not blocking you from moving forward now.*
 ### A1. Backend — Authentication Layer
 - [x] Design the auth token (JWT vs. simple opaque token + DB-stored expiry)
 - [x] Build `POST /api/mobile/login` — verifies password, triggers OTP for students,
-      returns a temporary "OTP pending" reference; all logins now require OTP
+      returns a temporary "OTP pending" reference
 - [x] Build `POST /api/mobile/verify-otp` — validates the code, issues the real auth
       token on success
-- [x] Build `POST /api/mobile/resend-otp` — allows students to resend the OTP code to
-      their email if the original expires or is lost
 - [x] Build `POST /api/mobile/change-password` — for the forced first-login password change
 - [x] Decide token expiry/refresh strategy
-- [x] Improve OTP email messages — professional template with security guidance and
-      clear expiry information
-- [x] Optimize network performance — move email sending to background process so login
-      response returns immediately without waiting for SMTP; prevents network timeouts
-- [x] Create background email worker (`send-otp-email.php`) — handles OTP delivery
-      asynchronously with proc_open or fallback sync mode
 
 ### A2. Backend — Data Endpoints
 - [x] Extend `student_dashboard_snapshot.php` — add token-auth support + merge in
@@ -47,11 +39,11 @@ confirmed rather than assumed — but not blocking you from moving forward now.*
 - [x] Align mock data field names/status values to the real schema during the swap:
       `'assigned'` not `'pending'` (Schedule), `'present'` not `'active'` + add
       `'incomplete'` (Attendance)
-- [x] **Fix OTP screen copy bug**: Updated to accurately reflect that OTP is required
-      on **every** login for security. Mobile screens now show:
-      - Login screen: "Email Verification Required" — sets expectations before OTP step
-      - OTP verification: "For your security, a 6-digit code has been sent to your email"
-      - Note: Explains this is required for every student login, not just new devices
+- [ ] **Fix OTP screen copy bug**: currently says *"This step only appears when logging in
+      from a device that hasn't been used before"* — factually wrong. Real behavior (and
+      the paper) confirm OTP fires on **every** login. Update the on-screen text.
+      *(Left unchecked deliberately — this is a real, specific bug worth confirming got
+      fixed, not just assumed alongside the rest.)*
 
 ### A4. Mobile — Screens Not Yet Built
 - [x] Forgot Password flow
