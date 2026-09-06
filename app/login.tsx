@@ -1,28 +1,28 @@
 import { apiRequest } from "@/constants/api";
 import { router } from "expo-router";
 import {
-    ArrowLeft,
-    ArrowRight,
-    Check,
-    Eye,
-    EyeOff,
-    GraduationCap,
-    Info,
-    Lock,
-    Mail,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Eye,
+  EyeOff,
+  Info,
+  Lock,
+  Mail
 } from "lucide-react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function LoginScreen() {
@@ -111,9 +111,12 @@ export default function LoginScreen() {
               >
                 <ArrowLeft size={18} color="#ffffff" />
               </TouchableOpacity>
-              <View style={styles.headerLogoPill}>
-                <GraduationCap size={16} color="#003087" />
-                <Text style={styles.headerLogoText}>NU SAMS</Text>
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Image
+                  source={require('../assets/images/logo.png')}
+                  style={{ width: 40, height: 40 }}
+                  resizeMode="contain"
+                />
               </View>
             </View>
 
@@ -387,11 +390,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    shadowColor: "#f4b333",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 3,
   },
   submitBtnDisabled: {
     opacity: 0.6,
