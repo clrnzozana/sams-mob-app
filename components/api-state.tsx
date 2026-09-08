@@ -12,7 +12,7 @@ export default function ApiState({
 
   return (
     <View style={styles.container}>
-      {loading ? <ActivityIndicator size="large" color="#003087" /> : null}
+      {loading ? <ActivityIndicator size="large" color="#061D5A" /> : null}
       <Text style={styles.text}>
         {loading ? "Loading your data..." : error}
       </Text>

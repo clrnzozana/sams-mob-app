@@ -109,7 +109,7 @@ export default function OtpVerificationScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#003087" />
+      <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
 
       <View style={styles.header}>
         <View style={styles.iconBadge}>
@@ -192,7 +192,7 @@ export default function OtpVerificationScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#003087" },
+  safeArea: { flex: 1, backgroundColor: "#061D5A" },
 
   header: {
     alignItems: "center",
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#101828",
   },
-  codeBoxFilled: { borderColor: "#003087", backgroundColor: "#eff6ff" },
+  codeBoxFilled: { borderColor: "#061D5A", backgroundColor: "#eff6ff" },
 
   submitBtn: {
     width: "100%",
@@ -277,11 +277,11 @@ const styles = StyleSheet.create({
   submitBtnText: {
     fontFamily: "Inter_700Bold",
     fontSize: 14,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   resendWrap: { marginTop: 18 },
-  resendText: { fontFamily: "Inter_700Bold", fontSize: 12.5, color: "#003087" },
+  resendText: { fontFamily: "Inter_700Bold", fontSize: 12.5, color: "#061D5A" },
   resendTextDisabled: { color: "#99a1af" },
 
   backText: { fontFamily: "Inter_600SemiBold", fontSize: 12, color: "#4a5565" },

@@ -49,7 +49,7 @@ export default function ForgotPasswordScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#003087" />
+      <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.back()}
@@ -93,7 +93,7 @@ export default function ForgotPasswordScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#003087" },
+  safeArea: { flex: 1, backgroundColor: "#061D5A" },
   header: { padding: 24, paddingTop: 12 },
   backButton: {
     width: 36,
@@ -160,5 +160,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  submitText: { fontFamily: "Inter_700Bold", color: "#003087" },
+  submitText: { fontFamily: "Inter_700Bold", color: "#061D5A" },
 });

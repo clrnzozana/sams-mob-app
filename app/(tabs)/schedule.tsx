@@ -322,7 +322,7 @@ export default function ScheduleScreen() {
       <ApiState loading={isLoading} error={loadError} />
       {!isLoading && !loadError ? (
         <>
-          <StatusBar barStyle="light-content" backgroundColor="#003087" />
+          <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
 
           {/* Header */}
           <View style={styles.header}>
@@ -349,7 +349,7 @@ export default function ScheduleScreen() {
                 <CalendarIcon
                   size={14}
                   color={
-                    view === "calendar" ? "#003087" : "rgba(255,255,255,0.85)"
+                    view === "calendar" ? "#061D5A" : "rgba(255,255,255,0.85)"
                   }
                 />
                 <Text
@@ -372,7 +372,7 @@ export default function ScheduleScreen() {
               >
                 <Clock
                   size={14}
-                  color={view === "list" ? "#003087" : "rgba(255,255,255,0.85)"}
+                  color={view === "list" ? "#061D5A" : "rgba(255,255,255,0.85)"}
                 />
                 <Text
                   style={[
@@ -398,7 +398,7 @@ export default function ScheduleScreen() {
                 onPress={() => setWeekOffset((prev) => prev - 1)}
                 activeOpacity={0.7}
               >
-                <ChevronLeft size={18} color="#003087" />
+                <ChevronLeft size={18} color="#061D5A" />
               </TouchableOpacity>
 
               <View style={styles.weekInfo}>
@@ -413,7 +413,7 @@ export default function ScheduleScreen() {
                 onPress={() => setWeekOffset((prev) => prev + 1)}
                 activeOpacity={0.7}
               >
-                <ChevronRight size={18} color="#003087" />
+                <ChevronRight size={18} color="#061D5A" />
               </TouchableOpacity>
             </View>
 
@@ -753,7 +753,7 @@ export default function ScheduleScreen() {
 
                         {/* Office Location */}
                         <View style={styles.listOfficeWrap}>
-                          <MapPin size={14} color="#003087" />
+                          <MapPin size={14} color="#061D5A" />
                           <Text style={styles.listOfficeText}>
                             {item.office}
                           </Text>
@@ -843,7 +843,7 @@ export default function ScheduleScreen() {
 
                   <View style={styles.modalBody}>
                     <View style={styles.modalRow}>
-                      <MapPin size={16} color="#003087" />
+                      <MapPin size={16} color="#061D5A" />
                       <View style={{ marginLeft: 10, flex: 1 }}>
                         <Text style={styles.modalLabel}>Assigned Office</Text>
                         <Text style={styles.modalValue}>
@@ -854,7 +854,7 @@ export default function ScheduleScreen() {
 
                     {selectedEntry.supervisor && (
                       <View style={styles.modalRow}>
-                        <Briefcase size={16} color="#003087" />
+                        <Briefcase size={16} color="#061D5A" />
                         <View style={{ marginLeft: 10, flex: 1 }}>
                           <Text style={styles.modalLabel}>
                             Supervisor / Contact
@@ -868,7 +868,7 @@ export default function ScheduleScreen() {
 
                     {selectedEntry.notes && (
                       <View style={styles.modalRow}>
-                        <AlertCircle size={16} color="#003087" />
+                        <AlertCircle size={16} color="#061D5A" />
                         <View style={{ marginLeft: 10, flex: 1 }}>
                           <Text style={styles.modalLabel}>Instructions</Text>
                           <Text style={styles.modalValue}>
@@ -954,10 +954,10 @@ export default function ScheduleScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
   },
   header: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     paddingHorizontal: 20,
     paddingTop: 8,
     paddingBottom: 16,
@@ -1008,7 +1008,7 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,0.85)",
   },
   switchTextActive: {
-    color: "#003087",
+    color: "#061D5A",
   },
 
   mainContainer: {
@@ -1268,8 +1268,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   filterChipActive: {
-    backgroundColor: "#003087",
-    borderColor: "#003087",
+    backgroundColor: "#061D5A",
+    borderColor: "#061D5A",
   },
   filterChipText: {
     fontFamily: "Inter_600SemiBold",
@@ -1476,7 +1476,7 @@ const styles = StyleSheet.create({
   modalTime: {
     fontFamily: "Inter_500Medium",
     fontSize: 12.5,
-    color: "#003087",
+    color: "#061D5A",
     marginTop: 2,
   },
   modalCloseBtn: {
@@ -1516,7 +1516,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   modalDoneBtn: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     borderRadius: 10,
     height: 42,
     alignItems: "center",

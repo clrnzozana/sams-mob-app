@@ -84,7 +84,7 @@ export default function AnnouncementsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#003087" />
+      <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
 
       <View style={styles.header}>
         <View style={styles.headerTopRow}>
@@ -156,10 +156,10 @@ export default function AnnouncementsScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#003087" },
+  safeArea: { flex: 1, backgroundColor: "#061D5A" },
 
   header: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     paddingHorizontal: 16,
     paddingTop: 6,
     paddingBottom: 20,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   markAllText: {
     fontFamily: "Inter_700Bold",
     fontSize: 11.5,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   card: {
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 3.5,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
   },
   cardTitle: {
     fontFamily: "Inter_600SemiBold",

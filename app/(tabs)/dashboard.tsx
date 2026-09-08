@@ -3,27 +3,27 @@ import ApiState from "@/components/api-state";
 import { authenticatedRequest } from "@/constants/api";
 import { router } from "expo-router";
 import {
-    ArrowRight,
-    Briefcase,
-    Calendar,
-    CheckCircle2,
-    ChevronRight,
-    Clock,
-    Hourglass,
-    ShieldCheck,
-    Sparkles,
-    TrendingUp,
-    User,
+  ArrowRight,
+  Briefcase,
+  Calendar,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  Hourglass,
+  ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  User,
 } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 function ProgressRow({
@@ -137,9 +137,9 @@ export default function DashboardScreen() {
         setNextDuty(
           data.next_duty
             ? {
-                day: data.next_duty.day_of_week,
-                time: data.next_duty.start_time,
-              }
+              day: data.next_duty.day_of_week,
+              time: data.next_duty.start_time,
+            }
             : null,
         );
         const today = new Date().toLocaleDateString("en-US", {
@@ -148,9 +148,9 @@ export default function DashboardScreen() {
         setTodaySchedule(
           data.next_duty?.day_of_week === today
             ? {
-                time: `${data.next_duty.start_time.slice(0, 5)} - ${data.next_duty.end_time.slice(0, 5)}`,
-                office: data.next_duty.office_name,
-              }
+              time: `${data.next_duty.start_time.slice(0, 5)} - ${data.next_duty.end_time.slice(0, 5)}`,
+              office: data.next_duty.office_name,
+            }
             : null,
         );
       })
@@ -166,7 +166,7 @@ export default function DashboardScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#003087" />
+      <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
       <ApiState loading={isLoading} error={loadError} />
       {!isLoading && !loadError ? (
         <ScrollView
@@ -341,7 +341,7 @@ export default function DashboardScreen() {
             <View style={styles.card}>
               <View style={styles.cardHeaderRow}>
                 <View style={styles.cardTitleWithIcon}>
-                  <Calendar size={16} color="#003087" />
+                  <Calendar size={16} color="#061D5A" />
                   <Text style={styles.cardHeading}>Today&apos;s Schedule</Text>
                 </View>
                 <TouchableOpacity
@@ -355,7 +355,7 @@ export default function DashboardScreen() {
               {todaySchedule ? (
                 <View style={styles.dutyItem}>
                   <View style={styles.dutyIconWrap}>
-                    <Calendar size={18} color="#003087" />
+                    <Calendar size={18} color="#061D5A" />
                   </View>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.dutyDay}>Today&apos;s Shift</Text>
@@ -447,7 +447,7 @@ export default function DashboardScreen() {
             {/* Schedule Progress */}
             <View style={styles.card}>
               <View style={styles.cardTitleWithIcon}>
-                <TrendingUp size={16} color="#003087" />
+                <TrendingUp size={16} color="#061D5A" />
                 <Text style={styles.cardHeadingSm}>Schedule Progress</Text>
               </View>
               <ProgressRow
@@ -473,7 +473,7 @@ export default function DashboardScreen() {
             {/* Attendance Snapshot */}
             <View style={styles.card}>
               <View style={styles.cardTitleWithIcon}>
-                <Clock size={16} color="#003087" />
+                <Clock size={16} color="#061D5A" />
                 <Text style={styles.cardHeadingSm}>Attendance Snapshot</Text>
               </View>
 
@@ -506,7 +506,7 @@ export default function DashboardScreen() {
                 activeOpacity={0.8}
               >
                 <Text style={styles.reportBtnText}>Open duty-hour report</Text>
-                <ArrowRight size={14} color="#003087" />
+                <ArrowRight size={14} color="#061D5A" />
               </TouchableOpacity>
             </View>
           </View>
@@ -519,14 +519,14 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
   },
   container: {
     flex: 1,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
   },
   header: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     paddingHorizontal: 20,
     paddingTop: 8,
     paddingBottom: 22,
@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
 
   /* Assignment Overview Card */
   overviewCard: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -625,12 +625,12 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   overviewSubCard: {
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "rgba(255, 255, 255, 0.08)",
     borderRadius: 12,
     padding: 12,
     marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
+    borderWidth: 0.2,
+    borderColor: "#f4b333",
   },
   subCardIconWrap: {
     width: 28,
@@ -795,7 +795,7 @@ const styles = StyleSheet.create({
   cardLink: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 11.5,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   /* Today's Schedule Card Content */
@@ -837,7 +837,7 @@ const styles = StyleSheet.create({
   dutyOfficeText: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 11,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   emptyState: {
@@ -870,7 +870,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -964,6 +964,6 @@ const styles = StyleSheet.create({
   reportBtnText: {
     fontFamily: "Inter_700Bold",
     fontSize: 12,
-    color: "#003087",
+    color: "#061D5A",
   },
 });

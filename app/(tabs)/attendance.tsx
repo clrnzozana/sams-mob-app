@@ -2,23 +2,23 @@ import NotificationBell from "@/components/NotificationBell";
 import ApiState from "@/components/api-state";
 import { authenticatedRequest } from "@/constants/api";
 import {
-    AlertCircle,
-    ArrowRight,
-    Calendar,
-    CheckCircle2,
-    Clock,
-    Timer,
-    XCircle,
+  AlertCircle,
+  ArrowRight,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Timer,
+  XCircle,
 } from "lucide-react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 type AttendanceStatus = "present" | "late" | "absent" | "incomplete";
@@ -217,7 +217,7 @@ export default function AttendanceScreen() {
       <ApiState loading={isLoading} error={loadError} />
       {!isLoading && !loadError ? (
         <>
-          <StatusBar barStyle="light-content" backgroundColor="#003087" />
+          <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
 
           {/* Clean Attendance Header */}
           <View style={styles.header}>
@@ -489,10 +489,10 @@ export default function AttendanceScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
   },
   header: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     paddingHorizontal: 20,
     paddingTop: 8,
     paddingBottom: 16,
@@ -574,8 +574,9 @@ const styles = StyleSheet.create({
 
   /* Hero Navy Card (Total Hours) */
   heroCard: {
-    backgroundColor: "#003087",
-    borderColor: "#002566",
+    backgroundColor: "#061D5A",
+    borderColor: "#f4b333",
+    borderWidth: 1,
   },
   heroIconCircle: {
     width: 32,
@@ -719,8 +720,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   filterChipActive: {
-    backgroundColor: "#003087",
-    borderColor: "#003087",
+    backgroundColor: "#061D5A",
+    borderColor: "#061D5A",
   },
   filterChipText: {
     fontFamily: "Inter_600SemiBold",
@@ -828,7 +829,7 @@ const styles = StyleSheet.create({
   hoursValueText: {
     fontFamily: "Poppins_700Bold",
     fontSize: 13,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   /* Empty state */

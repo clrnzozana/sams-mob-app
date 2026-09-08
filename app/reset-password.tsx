@@ -58,7 +58,7 @@ export default function ResetPasswordScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#003087" />
+      <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
       <View style={styles.header}>
         <View style={styles.iconCircle}>
           <Lock size={22} color="#ffb81c" />
@@ -110,7 +110,7 @@ export default function ResetPasswordScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#003087" },
+  safeArea: { flex: 1, backgroundColor: "#061D5A" },
   header: { alignItems: "center", padding: 28 },
   iconCircle: {
     width: 52,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   disabled: { opacity: 0.6 },
-  submitText: { fontFamily: "Inter_700Bold", color: "#003087" },
+  submitText: { fontFamily: "Inter_700Bold", color: "#061D5A" },
   loginLink: { alignItems: "center", marginTop: 20 },
-  loginText: { fontFamily: "Inter_600SemiBold", color: "#003087" },
+  loginText: { fontFamily: "Inter_600SemiBold", color: "#061D5A" },
 });

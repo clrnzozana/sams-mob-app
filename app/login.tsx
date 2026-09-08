@@ -89,7 +89,7 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#003087" />
+      <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
       <KeyboardAvoidingView
         style={styles.keyboardAvoid}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -210,13 +210,13 @@ export default function LoginScreen() {
               <Text style={styles.submitBtnText}>
                 {isSubmitting ? "Signing in..." : "Log In"}
               </Text>
-              <ArrowRight size={16} color="#003087" />
+              <ArrowRight size={16} color="#061D5A" />
             </TouchableOpacity>
 
             {/* Helper Note Box */}
             <View style={styles.noteBox}>
               <View style={styles.noteHeader}>
-                <Info size={15} color="#003087" />
+                <Info size={15} color="#061D5A" />
                 <Text style={styles.noteTitle}>First time logging in?</Text>
               </View>
               <Text style={styles.noteText}>
@@ -234,20 +234,20 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
   },
   keyboardAvoid: {
     flex: 1,
   },
   container: {
     flex: 1,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
   },
   scrollContent: {
     flexGrow: 1,
   },
   header: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     paddingHorizontal: 22,
     paddingTop: 8,
     paddingBottom: 22,
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
   headerLogoText: {
     fontFamily: "Inter_700Bold",
     fontSize: 11,
-    color: "#003087",
+    color: "#061D5A",
   },
   headerTitle: {
     fontFamily: "Poppins_700Bold",
@@ -368,8 +368,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   checkboxActive: {
-    backgroundColor: "#003087",
-    borderColor: "#003087",
+    backgroundColor: "#061D5A",
+    borderColor: "#061D5A",
   },
   rememberText: {
     fontFamily: "Inter_500Medium",
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
   forgotText: {
     fontFamily: "Inter_700Bold",
     fontSize: 12,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   submitBtn: {
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
   submitBtnText: {
     fontFamily: "Inter_700Bold",
     fontSize: 15,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   noteBox: {
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
   noteTitle: {
     fontFamily: "Inter_700Bold",
     fontSize: 12,
-    color: "#003087",
+    color: "#061D5A",
   },
   noteText: {
     fontFamily: "Inter_400Regular",

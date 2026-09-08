@@ -126,7 +126,7 @@ export default function ProfileScreen() {
       <ApiState loading={isLoading} error={loadError} />
       {!isLoading && !loadError ? (
         <>
-          <StatusBar barStyle="light-content" backgroundColor="#003087" />
+          <StatusBar barStyle="light-content" backgroundColor="#061D5A" />
           <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
             <View style={styles.header}>
               <View
@@ -165,7 +165,7 @@ export default function ProfileScreen() {
                     style={[styles.avatarStat, { backgroundColor: "#eff6ff" }]}
                   >
                     <Text
-                      style={[styles.avatarStatValue, { color: "#003087" }]}
+                      style={[styles.avatarStatValue, { color: "#061D5A" }]}
                     >
                       {student.totalDutyHours.toFixed(1)}
                     </Text>
@@ -205,7 +205,7 @@ export default function ProfileScreen() {
                 }}
               >
                 <View style={styles.cardHeading}>
-                  <User size={16} color="#003087" />
+                  <User size={16} color="#061D5A" />
                   <Text style={styles.cardTitle}>Personal Information</Text>
                 </View>
                 <View style={styles.field}>
@@ -230,7 +230,7 @@ export default function ProfileScreen() {
               {/* Academic Information */}
               <View style={styles.infoCard}>
                 <View style={styles.cardHeading}>
-                  <GraduationCap size={16} color="#003087" />
+                  <GraduationCap size={16} color="#061D5A" />
                   <Text style={styles.cardTitle}>Academic Information</Text>
                 </View>
                 <View style={styles.field}>
@@ -258,7 +258,7 @@ export default function ProfileScreen() {
               {/* Skills & Qualifications */}
               <View style={styles.infoCard}>
                 <View style={styles.cardHeading}>
-                  <Star size={16} color="#003087" />
+                  <Star size={16} color="#061D5A" />
                   <Text style={styles.cardTitle}>Skills & Qualifications</Text>
                 </View>
                 <View style={styles.field}>
@@ -353,7 +353,7 @@ export default function ProfileScreen() {
                   </Text>
                   <View style={styles.achievementRow}>
                     <View style={styles.achievementIcon}>
-                      <Award size={16} color="#003087" />
+                      <Award size={16} color="#061D5A" />
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text style={styles.achievementTitle}>
@@ -396,9 +396,9 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: "#003087" },
+  safeArea: { flex: 1, backgroundColor: "#061D5A" },
   header: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     paddingHorizontal: 20,
     paddingTop: 6,
     paddingBottom: 20,
@@ -431,7 +431,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 10,
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
   primaryBtn: {
     width: "100%",
     height: 44,
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -484,7 +484,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 44,
     borderWidth: 1.5,
-    borderColor: "#003087",
+    borderColor: "#061D5A",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
   outlineBtnText: {
     fontFamily: "Inter_700Bold",
     fontSize: 13,
-    color: "#003087",
+    color: "#061D5A",
   },
 
   infoCard: {
@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
-  chipText: { fontFamily: "Inter_600SemiBold", fontSize: 10, color: "#003087" },
+  chipText: { fontFamily: "Inter_600SemiBold", fontSize: 10, color: "#061D5A" },
   qualNote: {
     fontFamily: "Inter_400Regular",
     fontSize: 10.5,
@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
   },
 
   perfCard: {
-    backgroundColor: "#003087",
+    backgroundColor: "#061D5A",
     borderRadius: 16,
     padding: 18,
     marginBottom: 14,

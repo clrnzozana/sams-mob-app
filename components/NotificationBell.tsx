@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 3,
         borderWidth: 1.5,
-        borderColor: '#003087',
+        borderColor: '#061D5A',
     },
     badgeText: {
         fontFamily: 'Inter_700Bold',
