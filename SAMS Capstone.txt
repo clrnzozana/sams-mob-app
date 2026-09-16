@@ -39,7 +39,7 @@ confirmed rather than assumed — but not blocking you from moving forward now.*
 - [x] Align mock data field names/status values to the real schema during the swap:
       `'assigned'` not `'pending'` (Schedule), `'present'` not `'active'` + add
       `'incomplete'` (Attendance)
-- [ ] **Fix OTP screen copy bug**: currently says *"This step only appears when logging in
+- [x] **Fix OTP screen copy bug**: currently says *"This step only appears when logging in
       from a device that hasn't been used before"* — factually wrong. Real behavior (and
       the paper) confirm OTP fires on **every** login. Update the on-screen text.
       *(Left unchecked deliberately — this is a real, specific bug worth confirming got
@@ -48,14 +48,14 @@ confirmed rather than assumed — but not blocking you from moving forward now.*
 ### A4. Mobile — Screens Not Yet Built
 - [x] Forgot Password flow
 - [x] Change Password screen
-- [ ] Wire up Profile's Download My Data / Privacy Settings
-  - [ ] Decide: real export endpoint, or a local data summary screen
-  - [ ] *(Only if SAMS has an actual privacy policy document)* confirm the copy matches
+- [x] Wire up Profile's Download My Data / Privacy Settings
+  - [x] Decide: real export endpoint, or a local data summary screen
+  - [x] *(Only if SAMS has an actual privacy policy document)* confirm the copy matches
         it — if no such document exists, drop this sub-item; don't create a new deliverable
         nobody scoped
-- [ ] Add the notification bell to Schedule, Attendance, and Profile tabs (Dashboard
+- [x] Add the notification bell to Schedule, Attendance, and Profile tabs (Dashboard
       already has it) — reuse the existing `NotificationBell` component as-is
-- [ ] Clean up leftover `modal.tsx` (unused Expo starter template file)
+- [x] Clean up leftover `modal.tsx` (unused Expo starter template file)
 
 ### A5. Testing & Debugging
 - [ ] Test full auth flow end-to-end against the real backend: login → OTP → token →

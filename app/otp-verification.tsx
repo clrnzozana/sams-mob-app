@@ -181,9 +181,9 @@ export default function OtpVerificationScreen() {
 
         <View style={styles.noteBox}>
           <Text style={styles.noteText}>
-            This step only appears when logging in from a device that
-            hasn&apos;t been used on this account before. Once verified, this
-            device stays signed in until you log out.
+            For your security, OTP verification is required every time you log in
+            to your SAMS account. Once verified, this device stays signed in
+            until you log out.
           </Text>
         </View>
       </View>

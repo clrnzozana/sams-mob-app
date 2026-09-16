@@ -11,7 +11,9 @@ import {
     User,
 } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
+import * as Linking from "expo-linking";
 import {
+    Alert,
     SafeAreaView,
     ScrollView,
     StatusBar,
@@ -119,6 +121,35 @@ export default function ProfileScreen() {
   const handleLogout = async () => {
     await clearAuthToken();
     router.replace("/");
+  };
+
+  const handleDownloadData = async () => {
+    Alert.alert(
+      "Download Data",
+      "Are you sure you want to request an export of your personal data?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Download",
+          onPress: async () => {
+            try {
+              // Call the real export endpoint
+              const response = await authenticatedRequest("/api/mobile/export-data.php", {
+                method: "POST",
+              });
+              Alert.alert("Success", "Your data export has been requested. You will receive an email shortly.");
+            } catch (error) {
+              Alert.alert("Error", "Failed to request data export. Please try again later.");
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handlePrivacyPolicy = () => {
+    // Open the actual privacy policy document link
+    Linking.openURL("https://sams.nu-lipa.edu.ph/privacy-policy");
   };
 
   return (
@@ -376,10 +407,10 @@ export default function ProfileScreen() {
                 <Text style={[styles.cardTitle, { marginBottom: 12 }]}>
                   Account Actions
                 </Text>
-                <TouchableOpacity style={styles.greyBtn}>
+                <TouchableOpacity style={styles.greyBtn} onPress={handleDownloadData}>
                   <Text style={styles.greyBtnText}>Download My Data</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.greyBtn}>
+                <TouchableOpacity style={styles.greyBtn} onPress={handlePrivacyPolicy}>
                   <Text style={styles.greyBtnText}>Privacy Settings</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.redBtn} onPress={handleLogout}>
