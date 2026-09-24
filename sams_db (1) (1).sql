@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2026 at 04:01 PM
+-- Generation Time: Sep 23, 2026 at 02:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -211,7 +211,8 @@ CREATE TABLE `applications` (
 
 INSERT INTO `applications` (`application_id`, `student_id`, `term_id`, `status`, `preferred_office`, `skills`, `available_hours_per_week`, `minimum_hours_per_day`, `minimum_hours_per_semester`, `submitted_at`, `reviewed_by`, `reviewed_at`, `supervisor_id`, `assigned_at`, `created_at`, `updated_at`) VALUES
 (30, 31, 1, 'approved', 'ITSO', 'Teamwork, Problem Solving', 24, NULL, NULL, '2026-06-04 12:55:24', 1, '2026-06-04 12:56:03', NULL, NULL, '2026-06-04 12:55:24', '2026-06-04 12:56:03'),
-(32, 33, 1, 'approved', 'ITSO', 'Time Management, Leadership, Organization', 38, NULL, NULL, '2026-06-05 08:40:43', 1, '2026-06-05 08:41:24', NULL, NULL, '2026-06-05 08:40:25', '2026-06-05 08:41:24');
+(32, 33, 1, 'approved', 'ITSO', 'Time Management, Leadership, Organization', 38, NULL, NULL, '2026-06-05 08:40:43', 1, '2026-06-05 08:41:24', NULL, NULL, '2026-06-05 08:40:25', '2026-06-05 08:41:24'),
+(37, 42, 1, 'approved', 'ITSO', 'Time Management, Teamwork, Leadership', 31, NULL, NULL, '2026-08-13 03:48:19', 1, '2026-08-13 03:51:21', NULL, NULL, '2026-08-13 03:48:08', '2026-08-13 03:51:21');
 
 -- --------------------------------------------------------
 
@@ -287,7 +288,14 @@ INSERT INTO `availability` (`availability_id`, `application_id`, `term_id`, `day
 (181, 32, 1, 'Thursday', '08:00:00', '12:00:00', '2026-06-05 08:40:43', '2026-06-05 08:40:43', NULL),
 (182, 32, 1, 'Friday', '08:00:00', '12:00:00', '2026-06-05 08:40:43', '2026-06-05 08:40:43', NULL),
 (183, 32, 1, 'Friday', '13:00:00', '20:00:00', '2026-06-05 08:40:43', '2026-06-05 08:40:43', NULL),
-(184, 32, 1, 'Saturday', '08:00:00', '12:00:00', '2026-06-05 08:40:43', '2026-06-05 08:40:43', NULL);
+(184, 32, 1, 'Saturday', '08:00:00', '12:00:00', '2026-06-05 08:40:43', '2026-06-05 08:40:43', NULL),
+(185, 37, 1, 'Monday', '08:00:00', '12:00:00', '2026-08-13 03:48:19', '2026-08-13 03:48:19', NULL),
+(186, 37, 1, 'Monday', '13:00:00', '20:00:00', '2026-08-13 03:48:19', '2026-08-13 03:48:19', NULL),
+(187, 37, 1, 'Tuesday', '08:00:00', '12:00:00', '2026-08-13 03:48:19', '2026-08-13 03:48:19', NULL),
+(188, 37, 1, 'Wednesday', '08:00:00', '12:00:00', '2026-08-13 03:48:19', '2026-08-13 03:48:19', NULL),
+(189, 37, 1, 'Thursday', '08:00:00', '12:00:00', '2026-08-13 03:48:19', '2026-08-13 03:48:19', NULL),
+(190, 37, 1, 'Friday', '08:00:00', '12:00:00', '2026-08-13 03:48:19', '2026-08-13 03:48:19', NULL),
+(191, 37, 1, 'Saturday', '08:00:00', '12:00:00', '2026-08-13 03:48:19', '2026-08-13 03:48:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -318,7 +326,10 @@ INSERT INTO `document_uploads` (`upload_id`, `user_id`, `application_id`, `docum
 (72, 34, 30, 'other', 'Screenshot 2026-05-12 180403.png', 'photo_6a2175b4408ec7.77701591.png', 'uploads/documents/student_31/application_30/photo_6a2175b4408ec7.77701591.png', 447558, 'image/png', '2026-06-04 12:55:24'),
 (76, 36, 32, 'grade_slip', 'Screenshot 2026-05-12 180558.png', 'cog_6a228b74270e02.71659327.png', 'uploads/documents/student_33/application_32/cog_6a228b74270e02.71659327.png', 533514, 'image/png', '2026-06-05 08:40:25'),
 (77, 36, 32, 'valid_id', 'Screenshot 2026-05-12 180403.png', 'valid_id_6a228b74274e68.83555009.png', 'uploads/documents/student_33/application_32/valid_id_6a228b74274e68.83555009.png', 447558, 'image/png', '2026-06-05 08:40:25'),
-(78, 36, 32, 'other', 'Screenshot 2026-05-12 180731.png', 'photo_6a228b742767b5.10100552.png', 'uploads/documents/student_33/application_32/photo_6a228b742767b5.10100552.png', 431238, 'image/png', '2026-06-05 08:40:25');
+(78, 36, 32, 'other', 'Screenshot 2026-05-12 180731.png', 'photo_6a228b742767b5.10100552.png', 'uploads/documents/student_33/application_32/photo_6a228b742767b5.10100552.png', 431238, 'image/png', '2026-06-05 08:40:25'),
+(79, 45, 37, 'grade_slip', 'Week 3 (Part 2) - Activity 3.1 (ITELEC4L).pdf', 'cog_6a7d3e6b46e3b3.77798051.pdf', 'uploads/documents/student_42/application_37/cog_6a7d3e6b46e3b3.77798051.pdf', 237594, 'application/pdf', '2026-08-13 03:48:08'),
+(80, 45, 37, 'valid_id', 'Week 3 (Part 2) - Activity 3.1 (ITELEC4L).pdf', 'valid_id_6a7d3e6b475cb1.96141031.pdf', 'uploads/documents/student_42/application_37/valid_id_6a7d3e6b475cb1.96141031.pdf', 237594, 'application/pdf', '2026-08-13 03:48:08'),
+(81, 45, 37, 'other', 'Untitled design.png', 'photo_6a7d3e6b478f15.91213888.png', 'uploads/documents/student_42/application_37/photo_6a7d3e6b478f15.91213888.png', 862619, 'image/png', '2026-08-13 03:48:08');
 
 -- --------------------------------------------------------
 
@@ -358,7 +369,14 @@ INSERT INTO `duty_schedules` (`duty_id`, `application_id`, `office_name`, `term_
 (228, 32, 'ITSO', 1, 'Thursday', '08:00:00', '12:00:00', 'deployed', NULL, '2026-06-05 08:41:24', '2026-06-20 09:21:17'),
 (229, 32, 'ITSO', 1, 'Friday', '08:00:00', '12:00:00', 'deployed', NULL, '2026-06-05 08:41:24', '2026-06-20 09:21:17'),
 (230, 32, 'ITSO', 1, 'Friday', '13:00:00', '20:00:00', 'deployed', NULL, '2026-06-05 08:41:24', '2026-06-20 09:21:17'),
-(231, 32, 'ITSO', 1, 'Saturday', '08:00:00', '12:00:00', 'deployed', NULL, '2026-06-05 08:41:24', '2026-06-20 09:21:17');
+(231, 32, 'ITSO', 1, 'Saturday', '08:00:00', '12:00:00', 'deployed', NULL, '2026-06-05 08:41:24', '2026-06-20 09:21:17'),
+(236, 37, 'ITSO', 1, 'Monday', '08:00:00', '12:00:00', 'accepted', NULL, '2026-08-13 03:51:21', '2026-09-22 13:37:19'),
+(237, 37, 'ITSO', 1, 'Monday', '13:00:00', '20:00:00', 'accepted', NULL, '2026-08-13 03:51:21', '2026-09-22 13:37:19'),
+(238, 37, 'ITSO', 1, 'Tuesday', '08:00:00', '12:00:00', 'accepted', NULL, '2026-08-13 03:51:21', '2026-09-22 13:37:19'),
+(239, 37, 'ITSO', 1, 'Wednesday', '08:00:00', '12:00:00', 'accepted', NULL, '2026-08-13 03:51:21', '2026-09-22 13:37:19'),
+(240, 37, 'ITSO', 1, 'Thursday', '08:00:00', '12:00:00', 'accepted', NULL, '2026-08-13 03:51:21', '2026-09-22 13:37:19'),
+(241, 37, 'ITSO', 1, 'Friday', '08:00:00', '12:00:00', 'accepted', NULL, '2026-08-13 03:51:21', '2026-09-22 13:37:19'),
+(242, 37, 'ITSO', 1, 'Saturday', '08:00:00', '12:00:00', 'accepted', NULL, '2026-08-13 03:51:21', '2026-09-22 13:37:19');
 
 -- --------------------------------------------------------
 
@@ -409,36 +427,15 @@ CREATE TABLE `password_reset_tokens` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `mobile_otp_challenges`
+-- Dumping data for table `password_reset_tokens`
 --
 
-CREATE TABLE `mobile_otp_challenges` (
-  `challenge_id` char(64) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `code_hash` char(64) NOT NULL,
-  `expires_at` datetime NOT NULL,
-  `attempts` tinyint(3) unsigned NOT NULL DEFAULT 0,
-  `used_at` datetime DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mobile_auth_sessions`
---
-
-CREATE TABLE `mobile_auth_sessions` (
-  `session_id` bigint(20) unsigned NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `token_hash` char(64) NOT NULL,
-  `expires_at` datetime NOT NULL,
-  `revoked_at` datetime DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `password_reset_tokens` (`id`, `user_id`, `token_hash`, `expires_at`, `used_at`, `created_at`) VALUES
+(6, 19, 'e85f21dc19c7e0cf93f933c5a44008766f2cbe60b2a46afae36095fd9d98ec0c', '2026-05-17 17:14:01', '2026-05-17 16:14:25', '2026-05-17 08:14:01'),
+(8, 36, '67c79fe96e3bcfe1ef9982b3b8a7cb5517e80f3c811b18075195230e96050a4c', '2026-06-05 23:34:36', '2026-06-05 22:34:59', '2026-06-05 14:34:36'),
+(9, 34, '98d813f9fa43a023bd98a0882d8623db40c43c8fd7ede30b4be2397e30ce740b', '2026-06-20 19:30:56', '2026-06-20 18:31:17', '2026-06-20 10:30:56'),
+(10, 45, '11847d12f8e0b012f5f00419bcbb655d06181fc15d7960b85672074667028660', '2026-09-22 22:35:08', '2026-09-22 21:35:35', '2026-09-22 13:35:08');
 
 -- --------------------------------------------------------
 
@@ -496,7 +493,8 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`student_id`, `user_id`, `student_id_number`, `program`, `year_level`, `current_gpa`, `is_enrolled`, `is_good_standing`, `created_at`, `updated_at`, `nfc_uid`) VALUES
 (31, 34, '2021-2', 'BSIT', 3, 3.00, 1, 1, '2026-06-04 12:55:24', '2026-06-20 10:44:54', '1272586754'),
-(33, 36, '2021-1', 'BSIT', 4, 3.50, 1, 1, '2026-06-05 08:40:25', '2026-06-20 10:45:44', NULL);
+(33, 36, '2021-1', 'BSIT', 4, 3.50, 1, 1, '2026-06-05 08:40:25', '2026-06-20 10:45:44', NULL),
+(42, 45, '2022-180093', 'BSIT', 4, 3.52, 1, 1, '2026-08-13 03:48:08', '2026-08-13 03:48:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -649,6 +647,18 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `email`, `password_hash`, `role`, `first_name`, `last_name`, `phone_number`, `is_active`, `created_at`, `updated_at`, `must_change_password`) VALUES
+(1, 'admin@sams.local', '$2y$10$eUOLqFgYtzH7a/QaQnzUUe1dakV8SR3NRBYwZZQlhdsmUJX2pBtXa', 'admin', 'Admin', 'User', NULL, 1, '2026-05-10 15:31:49', '2026-06-05 14:02:38', 0),
+(2, 'ITSOsupervisor@sams.local', '$2y$10$eIOtPAYY4hN60xlUojTpieGUIOiv.HDTiEsEhCem3wdV904.X5.NC', 'supervisor', 'Tenz', 'Rivera', NULL, 1, '2026-05-10 15:31:49', '2026-06-20 09:31:21', 0),
+(15, 'Library@students.com', '$2y$10$HS4oUcTCuorCcsBcd393RO6HZ6xqQNllRkh2s/H1forXXY4FpJ7sa', 'supervisor', 'girl', 'ate', NULL, 1, '2026-05-15 04:59:37', '2026-06-05 14:02:38', 0),
+(34, 'pogi.lord@yahoo.com', '$2y$10$0B/B9e3ziB0dLYMrVCRdIemo8zGDZ60qXVZPzlYrS4ohEgvua.Bsm', 'student', 'pogi', '', '092', 1, '2026-06-04 12:55:24', '2026-06-20 10:31:17', 0),
+(36, 'martynjosephseloterio@gmail.com', '$2y$10$vrrptEg2uYIvbOQ2VjSr0evidNdR7.laepkgPT7dDJKdHARzX.QyW', 'student', 'martynjoseph', 'seloterio', '091', 1, '2026-06-05 08:40:25', '2026-06-05 14:35:50', 0),
+(45, 'thirdygarcia0822@gmail.com', '$2y$10$IqZTJVC9.qf5IFhUyHg6guGvM7gxaJ3IPPvSee1x4GbmLe2BBoxQ6', 'student', 'Thirdy', 'Garcia', '+63993626687', 1, '2026-08-13 03:48:08', '2026-09-22 13:35:35', 0);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -778,23 +788,6 @@ ALTER TABLE `password_reset_tokens`
   ADD KEY `idx_expires_at` (`expires_at`);
 
 --
--- Indexes for table `mobile_otp_challenges`
---
-ALTER TABLE `mobile_otp_challenges`
-  ADD PRIMARY KEY (`challenge_id`),
-  ADD KEY `idx_mobile_otp_user` (`user_id`),
-  ADD KEY `idx_mobile_otp_expires` (`expires_at`);
-
---
--- Indexes for table `mobile_auth_sessions`
---
-ALTER TABLE `mobile_auth_sessions`
-  ADD PRIMARY KEY (`session_id`),
-  ADD UNIQUE KEY `uq_mobile_auth_token_hash` (`token_hash`),
-  ADD KEY `idx_mobile_auth_user` (`user_id`),
-  ADD KEY `idx_mobile_auth_expires` (`expires_at`);
-
---
 -- Indexes for table `shuffle_history`
 --
 ALTER TABLE `shuffle_history`
@@ -868,6 +861,7 @@ ALTER TABLE `terms`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `unique_users_phone_number` (`phone_number`),
   ADD KEY `idx_email` (`email`),
   ADD KEY `idx_role` (`role`);
 
@@ -909,7 +903,7 @@ ALTER TABLE `announcement_reads`
 -- AUTO_INCREMENT for table `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `attendance_logs`
@@ -927,19 +921,19 @@ ALTER TABLE `audit_logs`
 -- AUTO_INCREMENT for table `availability`
 --
 ALTER TABLE `availability`
-  MODIFY `availability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `availability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=192;
 
 --
 -- AUTO_INCREMENT for table `document_uploads`
 --
 ALTER TABLE `document_uploads`
-  MODIFY `upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `duty_schedules`
 --
 ALTER TABLE `duty_schedules`
-  MODIFY `duty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=236;
+  MODIFY `duty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=243;
 
 --
 -- AUTO_INCREMENT for table `evaluations`
@@ -957,13 +951,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `mobile_auth_sessions`
---
-ALTER TABLE `mobile_auth_sessions`
-  MODIFY `session_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `shuffle_history`
@@ -975,7 +963,7 @@ ALTER TABLE `shuffle_history`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `student_hours_summary`
@@ -1011,7 +999,7 @@ ALTER TABLE `terms`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- Constraints for dumped tables
@@ -1088,18 +1076,6 @@ ALTER TABLE `evaluations`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `mobile_otp_challenges`
---
-ALTER TABLE `mobile_otp_challenges`
-  ADD CONSTRAINT `mobile_otp_challenges_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `mobile_auth_sessions`
---
-ALTER TABLE `mobile_auth_sessions`
-  ADD CONSTRAINT `mobile_auth_sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `shuffle_history`

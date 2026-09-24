@@ -8,7 +8,7 @@ function mobileDatabase(): PDO
 {
     $host = getenv('SAMS_DB_HOST') ?: '127.0.0.1';
     $port = getenv('SAMS_DB_PORT') ?: '3306';
-    $name = getenv('SAMS_DB_NAME') ?: 'sams-db';
+    $name = getenv('SAMS_DB_NAME') ?: 'sams_db';
     $user = getenv('SAMS_DB_USER');
     $password = getenv('SAMS_DB_PASSWORD');
 
@@ -20,7 +20,7 @@ function mobileDatabase(): PDO
             'Please ensure sams-backend/.env exists and contains: SAMS_DB_USER=root'
         );
     }
-    
+
     if ($password === false) {
         throw new RuntimeException(
             'Database password configuration error. ' .
@@ -40,8 +40,8 @@ function mobileDatabase(): PDO
     } catch (PDOException $e) {
         // Re-throw with better context
         throw new PDOException(
-            'Database connection failed: ' . $e->getMessage() . 
-            ' | Host: ' . $host . ' | Port: ' . $port . ' | Database: ' . $name . 
+            'Database connection failed: ' . $e->getMessage() .
+            ' | Host: ' . $host . ' | Port: ' . $port . ' | Database: ' . $name .
             ' | User: ' . $user,
             (int) $e->getCode(),
             $e
