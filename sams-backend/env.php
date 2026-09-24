@@ -23,16 +23,14 @@ function loadEnv(string $envFilePath = __DIR__ . '/.env'): void
         $key = trim($key);
         $value = trim($value);
 
-        if ($key !== '' && getenv($key) === false) {
+        if ($key !== '') {
             putenv("{$key}={$value}");
+            $_ENV[$key] = $value;
         }
     }
 }
 
-if (getenv('SAMS_ENVIRONMENT_LOADED') !== 'true') {
-    $envFile = __DIR__ . '/.env';
-    if (is_file($envFile)) {
-        loadEnv($envFile);
-        putenv('SAMS_ENVIRONMENT_LOADED=true');
-    }
+$envFile = __DIR__ . '/.env';
+if (is_file($envFile)) {
+    loadEnv($envFile);
 }

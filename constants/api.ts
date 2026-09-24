@@ -3,7 +3,7 @@ import { Platform } from "react-native";
 
 // Use the computer's LAN IP and PHP development-server port on a physical phone.
 
-export const API_BASE_URL = "http://192.168.101.138:8000";
+export const API_BASE_URL = "http://192.168.1.19:8000";
 
 export async function apiRequest<T>(
   path: string,

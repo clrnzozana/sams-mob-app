@@ -49,13 +49,6 @@ try {
         mobileLoginResponse(['error' => 'Invalid credentials.'], 401);
     }
 
-    if ($user['role'] !== 'student') {
-        mobileLoginResponse([
-            'token' => mobileCreateAuthSession($database, (int) $user['user_id']),
-            'must_change_password' => (bool) $user['must_change_password'],
-        ]);
-    }
-
     $challengeId = bin2hex(random_bytes(32));
     $otpCode = (string) random_int(100000, 999999);
     $expiresAt = (new DateTimeImmutable('now', new DateTimeZone('UTC')))
@@ -82,30 +75,26 @@ try {
     ]);
     $database->commit();
 
-    $mailSent = mobileSendMail(
-        $user['email'],
-        'NU SAMS verification code',
-        "Your NU SAMS verification code is {$otpCode}. It expires in 10 minutes."
-    );
+    $mailSent = mobileSendOtpEmail($user['email'], $otpCode);
+    error_log("[sams-auth] OTP for {$user['email']} ({$user['role']}): {$otpCode} | Email Sent: " . ($mailSent ? 'SUCCESS' : 'FAILED'));
 
-    if (!$mailSent) {
-        if (getenv('SAMS_OTP_DEBUG') !== 'true') {
-            mobileLoginResponse(['error' => 'Unable to send verification code.'], 503);
-        }
+    $isDebug = getenv('SAMS_OTP_DEBUG') === 'true';
 
+    if (!$mailSent && !$isDebug) {
         mobileLoginResponse([
-            'otp_pending' => true,
-            'challenge_id' => $challengeId,
-            'expires_in' => 600,
-            'debug_otp' => $otpCode,
-        ]);
+            'error' => 'Unable to send verification code to ' . $user['email'] . '. Please check SMTP configuration.',
+        ], 503);
     }
 
-    mobileLoginResponse([
+    $payload = [
         'otp_pending' => true,
         'challenge_id' => $challengeId,
+        'email' => $user['email'],
         'expires_in' => 600,
-    ]);
+        'mail_sent' => $mailSent,
+    ];
+
+    mobileLoginResponse($payload);
 } catch (Throwable $error) {
     if (isset($database) && $database->inTransaction()) {
         $database->rollBack();

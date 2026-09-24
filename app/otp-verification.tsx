@@ -17,8 +17,9 @@ const CODE_LENGTH = 6;
 const RESEND_COOLDOWN = 30; // seconds
 
 export default function OtpVerificationScreen() {
-  const { challengeId, debugOtp } = useLocalSearchParams<{
+  const { challengeId, email, debugOtp } = useLocalSearchParams<{
     challengeId: string;
+    email?: string;
     debugOtp?: string;
   }>();
   const [digits, setDigits] = useState<string[]>(Array(CODE_LENGTH).fill(""));
@@ -27,11 +28,7 @@ export default function OtpVerificationScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
-  useEffect(() => {
-    if (debugOtp && typeof debugOtp === "string" && debugOtp.length === CODE_LENGTH) {
-      setDigits(debugOtp.split(""));
-    }
-  }, [debugOtp]);
+  // Input fields must always start empty so user enters the OTP from their email
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -103,14 +100,39 @@ export default function OtpVerificationScreen() {
     }
   };
 
-  const handleResend = () => {
-    if (cooldown > 0) return;
-    // TODO: trigger a real resend request to the backend once available
-    setCooldown(RESEND_COOLDOWN);
-    Alert.alert(
-      "Code resent",
-      "A new code has been sent to your registered email.",
-    );
+  const [isResending, setIsResending] = useState(false);
+
+  const handleResend = async () => {
+    if (cooldown > 0 || isResending) return;
+    setIsResending(true);
+    setError("");
+
+    try {
+      const response = await apiRequest<{
+        success: boolean;
+        message?: string;
+        debug_otp?: string;
+      }>("/api/mobile/resend-otp.php", {
+        method: "POST",
+        body: JSON.stringify({ challenge_id: challengeId }),
+      });
+
+      setCooldown(RESEND_COOLDOWN);
+      setDigits(Array(CODE_LENGTH).fill(""));
+
+      Alert.alert(
+        "Code Resent",
+        `A fresh 6-digit verification code has been sent to ${email || "your registered email"}.`,
+      );
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to resend verification code.",
+      );
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -123,8 +145,11 @@ export default function OtpVerificationScreen() {
         </View>
         <Text style={styles.headerTitle}>Verify Your Email</Text>
         <Text style={styles.headerSub}>
-          We noticed this is a new device. Enter the 6-digit code sent to your
-          registered email to continue.
+          Enter the 6-digit code sent to{" "}
+          <Text style={{ fontWeight: "700", color: "#ffffff" }}>
+            {email || "your registered email"}
+          </Text>{" "}
+          to complete your login.
         </Text>
       </View>
 

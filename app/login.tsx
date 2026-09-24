@@ -61,6 +61,7 @@ export default function LoginScreen() {
         token?: string;
         otp_pending?: boolean;
         challenge_id?: string;
+        email?: string;
         debug_otp?: string;
         must_change_password?: boolean;
       }>("/api/mobile/login.php", {
@@ -84,7 +85,7 @@ export default function LoginScreen() {
           pathname: "/otp-verification",
           params: {
             challengeId: result.challenge_id,
-            debugOtp: result.debug_otp,
+            email: result.email ?? email.trim(),
           },
         });
         return;
