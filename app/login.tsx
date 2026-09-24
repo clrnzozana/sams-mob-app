@@ -1,4 +1,4 @@
-import { apiRequest } from "@/constants/api";
+import { apiRequest, getRememberedEmail, saveRememberedEmail, clearRememberedEmail } from "@/constants/api";
 import { router } from "expo-router";
 import {
   ArrowLeft,
@@ -10,7 +10,7 @@ import {
   Lock,
   Mail
 } from "lucide-react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -32,6 +32,15 @@ export default function LoginScreen() {
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    getRememberedEmail().then((savedEmail) => {
+      if (savedEmail) {
+        setEmail(savedEmail);
+        setRememberMe(true);
+      }
+    });
+  }, []);
 
   const handleLogin = async () => {
     setError("");
@@ -58,6 +67,12 @@ export default function LoginScreen() {
         method: "POST",
         body: JSON.stringify({ email: email.trim(), password }),
       });
+
+      if (rememberMe) {
+        await saveRememberedEmail(email.trim());
+      } else {
+        await clearRememberedEmail();
+      }
 
       if (result.token) {
         router.replace("/(tabs)/dashboard");

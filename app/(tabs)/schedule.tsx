@@ -208,6 +208,7 @@ export default function ScheduleScreen() {
     null,
   );
   const [weekOffset, setWeekOffset] = useState(0);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -221,8 +222,10 @@ export default function ScheduleScreen() {
         end_time: string;
         status: "assigned" | "accepted" | "declined" | "deployed";
       }>;
+      unread_notifications: number;
     }>("/api/mobile/schedule.php")
-      .then((data) =>
+      .then((data) => {
+        setUnreadNotifications(data.unread_notifications ?? 0);
         setSchedule(
           data.schedule.map((item) => ({
             id: item.duty_id,
@@ -239,8 +242,8 @@ export default function ScheduleScreen() {
               3600000,
             status: item.status,
           })),
-        ),
-      )
+        );
+      })
       .catch((requestError) => {
         setLoadError(
           requestError instanceof Error
@@ -333,7 +336,7 @@ export default function ScheduleScreen() {
                   Manage your weekly duty assignments
                 </Text>
               </View>
-              <NotificationBell unreadCount={pendingCount} />
+              <NotificationBell unreadCount={unreadNotifications} />
             </View>
 
             {/* View Switcher Tabs */}

@@ -92,6 +92,8 @@ export default function DashboardScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+
   useEffect(() => {
     authenticatedRequest<{
       student: { name: string };
@@ -111,6 +113,7 @@ export default function DashboardScreen() {
         end_time: string;
         office_name: string;
       } | null;
+      unread_notifications: number;
     }>("/student_dashboard_snapshot.php")
       .then((data) => {
         setStudent({ name: data.student.name, office: data.assignment.office });
@@ -153,6 +156,7 @@ export default function DashboardScreen() {
             }
             : null,
         );
+        setUnreadNotifications(data.unread_notifications ?? 0);
       })
       .catch((requestError) => {
         setLoadError(
@@ -182,7 +186,7 @@ export default function DashboardScreen() {
                   Active Assistant · 2026
                 </Text>
               </View>
-              <NotificationBell unreadCount={2} />
+              <NotificationBell unreadCount={unreadNotifications} />
             </View>
 
             <View style={styles.greetingWrap}>
