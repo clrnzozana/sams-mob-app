@@ -28,6 +28,12 @@ export default function OtpVerificationScreen() {
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
   useEffect(() => {
+    if (debugOtp && typeof debugOtp === "string" && debugOtp.length === CODE_LENGTH) {
+      setDigits(debugOtp.split(""));
+    }
+  }, [debugOtp]);
+
+  useEffect(() => {
     if (cooldown <= 0) return;
     const t = setTimeout(() => setCooldown((c) => c - 1), 1000);
     return () => clearTimeout(t);
