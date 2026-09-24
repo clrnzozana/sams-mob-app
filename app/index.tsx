@@ -1,3 +1,4 @@
+import { getAuthToken } from "@/constants/api";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -103,42 +104,50 @@ const LandingScreen = () => {
     }
 
     const timer = setTimeout(() => {
-      setIsLoading(false);
-      SplashScreen.hideAsync().catch(() => undefined);
+      const checkToken = async () => {
+        const token = await getAuthToken();
+        if (token) {
+          router.replace("/(tabs)/dashboard");
+          return;
+        }
+        setIsLoading(false);
+        SplashScreen.hideAsync().catch(() => undefined);
 
-      // Start staggered entrance animations after loading screen hides
-      Animated.sequence([
-        Animated.timing(fadeAnimHeader, {
-          toValue: 1,
-          duration: 400,
-          useNativeDriver: true,
-        }),
-        Animated.parallel([
-          Animated.timing(fadeAnimTitle, {
+        // Start staggered entrance animations after loading screen hides
+        Animated.sequence([
+          Animated.timing(fadeAnimHeader, {
             toValue: 1,
-            duration: 500,
+            duration: 400,
             useNativeDriver: true,
           }),
-          Animated.timing(slideAnimTitle, {
-            toValue: 0,
-            duration: 500,
-            useNativeDriver: true,
-          })
-        ]),
-        Animated.parallel([
-          Animated.timing(fadeAnimCTA, {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true,
-          }),
-          Animated.timing(slideAnimCTA, {
-            toValue: 0,
-            duration: 500,
-            useNativeDriver: true,
-          })
-        ])
-      ]).start();
-
+          Animated.parallel([
+            Animated.timing(fadeAnimTitle, {
+              toValue: 1,
+              duration: 500,
+              useNativeDriver: true,
+            }),
+            Animated.timing(slideAnimTitle, {
+              toValue: 0,
+              duration: 500,
+              useNativeDriver: true,
+            })
+          ]),
+          Animated.parallel([
+            Animated.timing(fadeAnimCTA, {
+              toValue: 1,
+              duration: 500,
+              useNativeDriver: true,
+            }),
+            Animated.timing(slideAnimCTA, {
+              toValue: 0,
+              duration: 500,
+              useNativeDriver: true,
+            })
+          ])
+        ]).start();
+      };
+      
+      checkToken();
     }, 700);
 
     return () => clearTimeout(timer);

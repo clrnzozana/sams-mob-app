@@ -144,6 +144,7 @@ export default function AttendanceScreen() {
   const [statusFilter, setStatusFilter] = useState<AttendanceStatus | "all">(
     "all",
   );
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -160,8 +161,10 @@ export default function AttendanceScreen() {
         status: AttendanceStatus | "incomplete";
         office: string | null;
       }>;
+      unread_notifications: number;
     }>("/attendance_snapshot.php")
-      .then((data) =>
+      .then((data) => {
+        setUnreadNotifications(data.unread_notifications ?? 0);
         setLogs(
           data.logs.map((log) => ({
             id: log.log_id,
@@ -173,8 +176,8 @@ export default function AttendanceScreen() {
             status: log.status,
             office: log.office ?? undefined,
           })),
-        ),
-      )
+        );
+      })
       .catch((requestError) => {
         setLoadError(
           requestError instanceof Error
@@ -228,7 +231,7 @@ export default function AttendanceScreen() {
                   Duty hour records and time logs
                 </Text>
               </View>
-              <NotificationBell unreadCount={2} />
+              <NotificationBell unreadCount={unreadNotifications} />
             </View>
 
             {/* Term & Record Info */}

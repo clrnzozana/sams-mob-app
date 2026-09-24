@@ -57,6 +57,7 @@ export default function ProfileScreen() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const scrollRef = useRef<ScrollView>(null);
   const personalInfoY = useRef(0);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   useEffect(() => {
     authenticatedRequest<{
@@ -78,8 +79,10 @@ export default function ProfileScreen() {
         total_duties: number;
         accepted_duties: number;
       };
+      unread_notifications: number;
     }>("/api/mobile/profile.php")
-      .then((data) =>
+      .then((data) => {
+        setUnreadNotifications(data.unread_notifications ?? 0);
         setStudent((current) => ({
           ...current,
           name: data.user.name,
@@ -99,8 +102,8 @@ export default function ProfileScreen() {
           totalDutyHours: data.summary.total_duty_hours,
           totalDuties: data.summary.total_duties,
           acceptedDuties: data.summary.accepted_duties,
-        })),
-      )
+        }));
+      })
       .catch((requestError) => {
         setLoadError(
           requestError instanceof Error
@@ -173,7 +176,7 @@ export default function ProfileScreen() {
                     Manage your personal information and account settings
                   </Text>
                 </View>
-                <NotificationBell unreadCount={2} />
+                <NotificationBell unreadCount={unreadNotifications} />
               </View>
             </View>
 

@@ -107,6 +107,14 @@ try {
 	$present = (int) ($summary['present'] ?? 0);
 	$late = (int) ($summary['late'] ?? 0);
 
+	$notificationStatement = $database->prepare(
+		'SELECT COUNT(*)
+		 FROM notifications
+		 WHERE user_id = :user_id
+		   AND is_read = 0'
+	);
+	$notificationStatement->execute([':user_id' => $user['user_id']]);
+
 	attendanceResponse([
 		'term' => $assignment['term_name'] . ' ' . $assignment['term_year'],
 		'summary' => [
@@ -119,6 +127,7 @@ try {
 			'rendered_hours' => (float) ($summary['rendered_hours'] ?? 0),
 		],
 		'logs' => $logs,
+		'unread_notifications' => (int) $notificationStatement->fetchColumn(),
 	]);
 } catch (Throwable $error) {
 	error_log($error->getMessage());

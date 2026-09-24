@@ -58,11 +58,11 @@ confirmed rather than assumed — but not blocking you from moving forward now.*
 - [x] Clean up leftover `modal.tsx` (unused Expo starter template file)
 
 ### A5. Testing & Debugging
-- [ ] Test full auth flow end-to-end against the real backend: login → OTP → token →
+- [x] Test full auth flow end-to-end against the real backend: login → OTP → token →
       forced password change → Dashboard
-  - [ ] Use a real student account with valid test data
-  - [ ] Confirm the user cannot proceed past auth if OTP or token validation fails
-  - [ ] Validate the first-login password change flow is enforced correctly
+  - [x] Use a real student account with valid test data
+  - [x] Confirm the user cannot proceed past auth if OTP or token validation fails
+  - [x] Validate the first-login password change flow is enforced correctly
 - [ ] Test Accept/Decline writing correctly to `duty_schedules` and reflecting immediately
       in the UI
   - [ ] Confirm the server writes the correct status value (`accepted` or `declined`)

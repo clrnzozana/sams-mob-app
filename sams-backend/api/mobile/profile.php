@@ -70,6 +70,14 @@ try {
 		? []
 		: array_values(array_filter(array_map('trim', explode(',', $profile['skills']))));
 
+	$notificationStatement = $database->prepare(
+		'SELECT COUNT(*)
+		 FROM notifications
+		 WHERE user_id = :user_id
+		   AND is_read = 0'
+	);
+	$notificationStatement->execute([':user_id' => $user['user_id']]);
+
 	profileResponse([
 		'user' => [
 			'user_id' => (int) $user['user_id'],
@@ -102,6 +110,7 @@ try {
 			'accepted_duties' => (int) ($profile['accepted_duties'] ?? 0),
 			'declined_duties' => (int) ($profile['declined_duties'] ?? 0),
 		],
+		'unread_notifications' => (int) $notificationStatement->fetchColumn(),
 	]);
 } catch (Throwable $error) {
 	error_log($error->getMessage());

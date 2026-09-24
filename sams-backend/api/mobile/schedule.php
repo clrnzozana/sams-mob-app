@@ -83,6 +83,14 @@ try {
 		$scheduleStatement->fetchAll()
 	);
 
+	$notificationStatement = $database->prepare(
+		'SELECT COUNT(*)
+		 FROM notifications
+		 WHERE user_id = :user_id
+		   AND is_read = 0'
+	);
+	$notificationStatement->execute([':user_id' => $user['user_id']]);
+
 	scheduleResponse([
 		'assignment' => [
 			'application_id' => (int) $assignment['application_id'],
@@ -91,6 +99,7 @@ try {
 			'office' => $assignment['preferred_office'],
 		],
 		'schedule' => $schedule,
+		'unread_notifications' => (int) $notificationStatement->fetchColumn(),
 	]);
 } catch (Throwable $error) {
 	error_log($error->getMessage());

@@ -2,6 +2,7 @@ import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 
 // Use the computer's LAN IP and PHP development-server port on a physical phone.
+
 export const API_BASE_URL = "http://192.168.101.138:8000";
 
 export async function apiRequest<T>(
@@ -51,6 +52,29 @@ export async function clearAuthToken(): Promise<void> {
   }
 
   await SecureStore.deleteItemAsync("sams_auth_token");
+}
+
+export async function saveRememberedEmail(email: string): Promise<void> {
+  if (Platform.OS === "web") {
+    window.localStorage.setItem("sams_remembered_email", email);
+    return;
+  }
+  await SecureStore.setItemAsync("sams_remembered_email", email);
+}
+
+export async function getRememberedEmail(): Promise<string | null> {
+  if (Platform.OS === "web") {
+    return window.localStorage.getItem("sams_remembered_email");
+  }
+  return SecureStore.getItemAsync("sams_remembered_email");
+}
+
+export async function clearRememberedEmail(): Promise<void> {
+  if (Platform.OS === "web") {
+    window.localStorage.removeItem("sams_remembered_email");
+    return;
+  }
+  await SecureStore.deleteItemAsync("sams_remembered_email");
 }
 
 export async function authenticatedRequest<T>(
