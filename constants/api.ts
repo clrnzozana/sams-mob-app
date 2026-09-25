@@ -17,11 +17,29 @@ export async function apiRequest<T>(
       ...options.headers,
     },
   });
-  const payload = (await response.json()) as T & { error?: string };
+  const text = await response.text();
+  let payload: (T & { error?: string }) | null = null;
+  try {
+    payload = JSON.parse(text) as T & { error?: string };
+  } catch {
+    const cleanSnippet = text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    if (!response.ok) {
+      throw new Error(
+        cleanSnippet
+          ? `Server error (${response.status}): ${cleanSnippet.slice(0, 140)}`
+          : `Request failed with status ${response.status}.`,
+      );
+    }
+    throw new Error(
+      cleanSnippet
+        ? `Unexpected server response: ${cleanSnippet.slice(0, 140)}`
+        : "Invalid server response format.",
+    );
+  }
 
   if (!response.ok) {
     throw new Error(
-      payload.error ?? `Request failed with status ${response.status}.`,
+      payload?.error ?? `Request failed with status ${response.status}.`,
     );
   }
 

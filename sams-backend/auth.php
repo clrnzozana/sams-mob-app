@@ -51,7 +51,7 @@ function mobileAuthenticate(PDO $database): ?array
 
     $statement = $database->prepare(
         'SELECT s.session_id, u.user_id, u.email, u.role, u.first_name, u.last_name,
-                u.must_change_password
+                u.phone_number, u.must_change_password
          FROM mobile_auth_sessions s
          INNER JOIN users u ON u.user_id = s.user_id
          WHERE s.token_hash = :token_hash

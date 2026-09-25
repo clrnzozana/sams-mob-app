@@ -78,6 +78,33 @@ try {
 	);
 	$notificationStatement->execute([':user_id' => $user['user_id']]);
 
+	$attendanceStatement = $database->prepare(
+		'SELECT
+			COUNT(*) AS total_records,
+			SUM(status = \'present\') AS present,
+			SUM(status = \'late\') AS late,
+			SUM(status = \'absent\') AS absent,
+			SUM(status = \'incomplete\') AS incomplete,
+			SUM(status = \'excused\') AS excused
+		 FROM attendance_logs
+		 WHERE application_id = :application_id
+		   AND term_id = :term_id'
+	);
+	$attendanceStatement->execute([
+		':application_id' => $profile['application_id'],
+		':term_id' => $profile['term_id'],
+	]);
+	$attendance = $attendanceStatement->fetch() ?: [];
+	$attendanceTotal = (int) ($attendance['total_records'] ?? 0);
+	$attendancePresent = (int) ($attendance['present'] ?? 0);
+	$attendanceLate = (int) ($attendance['late'] ?? 0);
+	$attendanceAbsent = (int) ($attendance['absent'] ?? 0);
+	$attendanceExcused = (int) ($attendance['excused'] ?? 0);
+	$countableTotal = $attendanceTotal - $attendanceExcused;
+	$attendanceRate = $countableTotal > 0
+		? (int) round((($attendancePresent + $attendanceLate) / $countableTotal) * 100)
+		: ($attendanceTotal > 0 && $attendanceExcused === $attendanceTotal ? 100 : 0);
+
 	profileResponse([
 		'user' => [
 			'user_id' => (int) $user['user_id'],
@@ -109,6 +136,9 @@ try {
 			'total_duties' => (int) ($profile['total_duties'] ?? 0),
 			'accepted_duties' => (int) ($profile['accepted_duties'] ?? 0),
 			'declined_duties' => (int) ($profile['declined_duties'] ?? 0),
+			'attendance_rate' => $attendanceRate,
+			'missed_duties' => $attendanceAbsent,
+			'excused_duties' => $attendanceExcused,
 		],
 		'unread_notifications' => (int) $notificationStatement->fetchColumn(),
 	]);

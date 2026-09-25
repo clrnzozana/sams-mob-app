@@ -63,11 +63,9 @@ confirmed rather than assumed — but not blocking you from moving forward now.*
   - [x] Use a real student account with valid test data
   - [x] Confirm the user cannot proceed past auth if OTP or token validation fails
   - [x] Validate the first-login password change flow is enforced correctly
-- [ ] Test Accept/Decline writing correctly to `duty_schedules` and reflecting immediately
-      in the UI
-  - [ ] Confirm the server writes the correct status value (`accepted` or `declined`)
-  - [ ] Verify the UI refreshes without requiring a full app restart
-  - [ ] Check both success and failure paths
+- [x] Align schedule workflow to admin approval: student submits availability via web application,
+      admin approves/declines duty schedules, and mobile app filters schedules under "Pending Approval",
+      "Approved", "Deployed", and "Declined" without student accept/decline actions
 - [ ] Test token expiry/refresh behavior
   - [ ] Confirm expired tokens trigger a proper logout or re-auth flow
   - [ ] Verify the app does not silently show stale student data after token invalidation

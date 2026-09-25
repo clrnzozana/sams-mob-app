@@ -83,6 +83,30 @@ try {
 		$scheduleStatement->fetchAll()
 	);
 
+	$notesStatement = $database->prepare(
+		'SELECT note_id, duty_id, schedule_date, reason, status, admin_reply, created_at, updated_at
+		 FROM duty_schedule_notes
+		 WHERE application_id = :application_id'
+	);
+	$notesStatement->execute([
+		':application_id' => $assignment['application_id'],
+	]);
+	$notes = array_map(
+		static function (array $note): array {
+			return [
+				'note_id' => (int) $note['note_id'],
+				'duty_id' => (int) $note['duty_id'],
+				'schedule_date' => $note['schedule_date'],
+				'reason' => $note['reason'],
+				'status' => $note['status'],
+				'admin_reply' => $note['admin_reply'],
+				'created_at' => $note['created_at'],
+				'updated_at' => $note['updated_at'],
+			];
+		},
+		$notesStatement->fetchAll(PDO::FETCH_ASSOC)
+	);
+
 	$notificationStatement = $database->prepare(
 		'SELECT COUNT(*)
 		 FROM notifications
@@ -99,6 +123,7 @@ try {
 			'office' => $assignment['preferred_office'],
 		],
 		'schedule' => $schedule,
+		'notes' => $notes,
 		'unread_notifications' => (int) $notificationStatement->fetchColumn(),
 	]);
 } catch (Throwable $error) {

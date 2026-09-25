@@ -23,32 +23,27 @@ import {
     View,
 } from "react-native";
 
-// Mock data — replace with real API data once the backend is ready
 const initialStudent = {
-  name: "Juan Dela Cruz",
-  id: "2023-04521",
+  name: "",
+  id: "",
   statusLabel: "Active Student Assistant",
-  totalDutyHours: 38.0,
-  acceptedDuties: 8,
-  totalDuties: 8,
-  attendanceRate: 92,
-  email: "juan.delacruz@nu-lipa.edu.ph",
-  contact: "0917 000 0000",
-  program: "BSIT",
-  yearLevel: "4th Year",
-  dateJoined: "June 2026",
+  totalDutyHours: 0.0,
+  acceptedDuties: 0,
+  totalDuties: 0,
+  attendanceRate: 0,
+  email: "",
+  contact: "",
+  program: "",
+  yearLevel: "",
+  dateJoined: "",
   academicStatus: "Active Student Assistant",
-  office: "Library",
+  office: "Unassigned",
   applicationStatus: "Approved",
-  hoursPerWeek: 20,
+  hoursPerWeek: 0,
   assignmentReadiness: "Ready",
-  skills: [
-    "Data Encoding",
-    "Record-Keeping and Filing",
-    "Communication Skills",
-    "Attention to Detail",
-  ],
+  skills: [] as string[],
   missedDuties: 0,
+  excusedDuties: 0,
 };
 
 export default function ProfileScreen() {
@@ -78,6 +73,9 @@ export default function ProfileScreen() {
         total_duty_hours: number;
         total_duties: number;
         accepted_duties: number;
+        attendance_rate: number;
+        missed_duties: number;
+        excused_duties?: number;
       };
       unread_notifications: number;
     }>("/api/mobile/profile.php")
@@ -88,7 +86,7 @@ export default function ProfileScreen() {
           name: data.user.name,
           id: data.student.student_id,
           email: data.user.email,
-          contact: data.user.phone_number ?? "Not provided",
+          contact: data.user.phone_number?.trim() || "Not provided",
           program: data.student.program,
           yearLevel:
             data.student.year_level === null
@@ -102,6 +100,9 @@ export default function ProfileScreen() {
           totalDutyHours: data.summary.total_duty_hours,
           totalDuties: data.summary.total_duties,
           acceptedDuties: data.summary.accepted_duties,
+          attendanceRate: data.summary.attendance_rate ?? 0,
+          missedDuties: data.summary.missed_duties ?? 0,
+          excusedDuties: data.summary.excused_duties ?? 0,
         }));
       })
       .catch((requestError) => {
@@ -393,12 +394,16 @@ export default function ProfileScreen() {
                       <Text style={styles.achievementTitle}>
                         {student.missedDuties === 0
                           ? "Perfect Attendance!"
-                          : "Keep Improving!"}
+                          : student.excusedDuties > 0 && student.missedDuties === student.excusedDuties
+                            ? "Excused Record"
+                            : "Keep Improving!"}
                       </Text>
                       <Text style={styles.achievementSub}>
                         {student.missedDuties === 0
                           ? "No missed duties recorded yet"
-                          : `You have ${student.missedDuties} missed duty log(s)`}
+                          : student.excusedDuties > 0
+                            ? `${student.missedDuties} missed shift(s) (${student.excusedDuties} excused by administration)`
+                            : `You have ${student.missedDuties} missed duty log(s)`}
                       </Text>
                     </View>
                   </View>

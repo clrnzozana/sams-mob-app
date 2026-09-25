@@ -7,6 +7,7 @@ import {
   Calendar,
   CheckCircle2,
   Clock,
+  ShieldCheck,
   Timer,
   XCircle,
 } from "lucide-react-native";
@@ -21,7 +22,12 @@ import {
   View,
 } from "react-native";
 
-type AttendanceStatus = "present" | "late" | "absent" | "incomplete";
+type AttendanceStatus =
+  | "present"
+  | "late"
+  | "absent"
+  | "incomplete"
+  | "excused";
 
 interface LogEntry {
   id: number;
@@ -115,6 +121,12 @@ const statusMeta: Record<
     border: "#fed7aa",
     label: "Incomplete",
   },
+  excused: {
+    bg: "#f0fdf4",
+    text: "#15803d",
+    border: "#bbf7d0",
+    label: "Excused",
+  },
 };
 
 function AttendanceStatusIcon({
@@ -136,6 +148,8 @@ function AttendanceStatusIcon({
       return <XCircle size={size} color={iconColor} />;
     case "incomplete":
       return <AlertCircle size={size} color={iconColor} />;
+    case "excused":
+      return <ShieldCheck size={size} color={iconColor} />;
   }
 }
 
@@ -194,9 +208,15 @@ export default function AttendanceScreen() {
     const late = logs.filter((l) => l.status === "late").length;
     const absent = logs.filter((l) => l.status === "absent").length;
     const incomplete = logs.filter((l) => l.status === "incomplete").length;
+    const excused = logs.filter((l) => l.status === "excused").length;
     const total = logs.length;
+    const countableTotal = total - excused;
     const attendanceRate =
-      total > 0 ? Math.round(((present + late) / total) * 100) : 0;
+      countableTotal > 0
+        ? Math.round(((present + late) / countableTotal) * 100)
+        : total > 0 && excused === total
+          ? 100
+          : 0;
 
     return {
       renderedHours,
@@ -204,6 +224,7 @@ export default function AttendanceScreen() {
       late,
       absent,
       incomplete,
+      excused,
       totalRecords: total,
       attendanceRate,
       termLabel: "Current Term",
@@ -364,7 +385,14 @@ export default function AttendanceScreen() {
               contentContainerStyle={styles.filterBar}
             >
               {(
-                ["all", "present", "late", "absent", "incomplete"] as const
+                [
+                  "all",
+                  "present",
+                  "late",
+                  "absent",
+                  "incomplete",
+                  "excused",
+                ] as const
               ).map((tab) => {
                 const active = statusFilter === tab;
                 const count =

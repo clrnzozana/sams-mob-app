@@ -84,7 +84,8 @@ try {
 			SUM(status = \'present\') AS present,
 			SUM(status = \'late\') AS late,
 			SUM(status = \'absent\') AS absent,
-			SUM(status = \'incomplete\') AS incomplete
+			SUM(status = \'incomplete\') AS incomplete,
+			SUM(status = \'excused\') AS excused
 		 FROM attendance_logs
 		 WHERE application_id = :application_id
 		   AND term_id = :term_id'
@@ -97,9 +98,11 @@ try {
 	$attendanceTotal = (int) ($attendance['total_records'] ?? 0);
 	$attendancePresent = (int) ($attendance['present'] ?? 0);
 	$attendanceLate = (int) ($attendance['late'] ?? 0);
-	$attendanceRate = $attendanceTotal > 0
-		? round((($attendancePresent + $attendanceLate) / $attendanceTotal) * 100, 1)
-		: 0;
+	$attendanceExcused = (int) ($attendance['excused'] ?? 0);
+	$countableTotal = $attendanceTotal - $attendanceExcused;
+	$attendanceRate = $countableTotal > 0
+		? round((($attendancePresent + $attendanceLate) / $countableTotal) * 100, 1)
+		: ($attendanceTotal > 0 && $attendanceExcused === $attendanceTotal ? 100 : 0);
 
 	$weekdayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	$todayIndex = (int) (new DateTimeImmutable('now'))->format('N') - 1;
@@ -118,6 +121,33 @@ try {
 	);
 	$nextDutyStatement->execute(array_merge([$applicationId, $termId], $nextDutyOrder));
 	$nextDuty = $nextDutyStatement->fetch() ?: null;
+
+	$deployedDutiesStmt = $database->prepare(
+		'SELECT duty_id, day_of_week, start_time, end_time, office_name, status
+		 FROM duty_schedules
+		 WHERE application_id = :application_id
+		   AND term_id = :term_id
+		   AND status = :deployed_status
+		 ORDER BY FIELD(day_of_week, \'Monday\', \'Tuesday\', \'Wednesday\', \'Thursday\', \'Friday\', \'Saturday\'), start_time'
+	);
+	$deployedDutiesStmt->execute([
+		':application_id' => $applicationId,
+		':term_id' => $termId,
+		':deployed_status' => 'deployed',
+	]);
+	$deployedDuties = array_map(
+		static function (array $row): array {
+			return [
+				'duty_id' => (int) $row['duty_id'],
+				'day_of_week' => $row['day_of_week'],
+				'start_time' => $row['start_time'],
+				'end_time' => $row['end_time'],
+				'office_name' => $row['office_name'],
+				'status' => $row['status'],
+			];
+		},
+		$deployedDutiesStmt->fetchAll(PDO::FETCH_ASSOC)
+	);
 
 	$notificationStatement = $database->prepare(
 		'SELECT COUNT(*)
@@ -160,8 +190,10 @@ try {
 			'late' => $attendanceLate,
 			'absent' => (int) ($attendance['absent'] ?? 0),
 			'incomplete' => (int) ($attendance['incomplete'] ?? 0),
+			'excused' => $attendanceExcused,
 		],
 		'unread_notifications' => (int) $notificationStatement->fetchColumn(),
+		'deployed_duties' => $deployedDuties,
 		'next_duty' => $nextDuty,
 	]);
 } catch (Throwable $error) {

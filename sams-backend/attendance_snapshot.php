@@ -71,12 +71,20 @@ try {
 
 	$logs = array_map(
 		static function (array $log): array {
+			$clockInTimestamp = strtotime($log['clock_in_time']);
+			$isAbsent = $log['status'] === 'absent';
+			$formattedDate = $clockInTimestamp !== false ? date('M j, Y', $clockInTimestamp) : $log['clock_in_time'];
+			$formattedClockIn = (!$isAbsent && $clockInTimestamp !== false) ? date('g:i A', $clockInTimestamp) : null;
+			$formattedClockOut = ($log['clock_out_time'] !== null && strtotime($log['clock_out_time']) !== false)
+				? date('g:i A', (int) strtotime($log['clock_out_time']))
+				: null;
+
 			return [
 				'log_id' => (int) $log['log_id'],
-				'date' => $log['clock_in_time'],
+				'date' => $formattedDate,
 				'day' => $log['day_of_week'],
-				'clock_in' => $log['clock_in_time'],
-				'clock_out' => $log['clock_out_time'],
+				'clock_in' => $formattedClockIn,
+				'clock_out' => $formattedClockOut,
 				'hours' => (float) $log['hours'],
 				'status' => $log['status'],
 				'late_minutes' => (int) ($log['late_minutes'] ?? 0),
@@ -92,6 +100,7 @@ try {
 				SUM(status = \'late\') AS late,
 				SUM(status = \'absent\') AS absent,
 				SUM(status = \'incomplete\') AS incomplete,
+				SUM(status = \'excused\') AS excused,
 				COALESCE(SUM(CASE WHEN clock_out_time IS NULL THEN 0
 					ELSE TIMESTAMPDIFF(SECOND, clock_in_time, clock_out_time) / 3600 END), 0) AS rendered_hours
 		 FROM attendance_logs
@@ -106,6 +115,8 @@ try {
 	$totalRecords = (int) ($summary['total_records'] ?? 0);
 	$present = (int) ($summary['present'] ?? 0);
 	$late = (int) ($summary['late'] ?? 0);
+	$excused = (int) ($summary['excused'] ?? 0);
+	$countableTotal = $totalRecords - $excused;
 
 	$notificationStatement = $database->prepare(
 		'SELECT COUNT(*)
@@ -123,7 +134,10 @@ try {
 			'late' => $late,
 			'absent' => (int) ($summary['absent'] ?? 0),
 			'incomplete' => (int) ($summary['incomplete'] ?? 0),
-			'attendance_rate' => $totalRecords > 0 ? round((($present + $late) / $totalRecords) * 100, 1) : 0,
+			'excused' => $excused,
+			'attendance_rate' => $countableTotal > 0
+				? round((($present + $late) / $countableTotal) * 100, 1)
+				: ($totalRecords > 0 && $excused === $totalRecords ? 100 : 0),
 			'rendered_hours' => (float) ($summary['rendered_hours'] ?? 0),
 		],
 		'logs' => $logs,
