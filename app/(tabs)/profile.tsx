@@ -123,8 +123,16 @@ export default function ProfileScreen() {
   };
 
   const handleLogout = async () => {
-    await clearAuthToken();
-    router.replace("/");
+    try {
+      await authenticatedRequest("/api/mobile/logout.php", {
+        method: "POST",
+      });
+    } catch {
+      // Ignore network errors during logout
+    } finally {
+      await clearAuthToken();
+      router.replace("/");
+    }
   };
 
   const handleDownloadData = async () => {
@@ -138,11 +146,11 @@ export default function ProfileScreen() {
           onPress: async () => {
             try {
               // Call the real export endpoint
-              const response = await authenticatedRequest("/api/mobile/export-data.php", {
+              await authenticatedRequest("/api/mobile/export-data.php", {
                 method: "POST",
               });
               Alert.alert("Success", "Your data export has been requested. You will receive an email shortly.");
-            } catch (error) {
+            } catch {
               Alert.alert("Error", "Failed to request data export. Please try again later.");
             }
           },

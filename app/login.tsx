@@ -1,4 +1,4 @@
-import { apiRequest, getRememberedEmail, saveRememberedEmail, clearRememberedEmail } from "@/constants/api";
+import { apiRequest, getRememberedEmail, saveRememberedEmail, clearRememberedEmail, saveAuthToken } from "@/constants/api";
 import { router } from "expo-router";
 import {
   ArrowLeft,
@@ -76,6 +76,7 @@ export default function LoginScreen() {
       }
 
       if (result.token) {
+        await saveAuthToken(result.token);
         router.replace("/(tabs)/dashboard");
         return;
       }

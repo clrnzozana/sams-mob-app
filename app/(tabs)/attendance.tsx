@@ -40,58 +40,6 @@ interface LogEntry {
   office?: string;
 }
 
-const mockLogs: LogEntry[] = [
-  {
-    id: 1,
-    date: "Aug 12, 2026",
-    day: "Wednesday",
-    timeIn: null,
-    timeOut: null,
-    hours: 0,
-    status: "absent",
-    office: "University Library - 2nd Flr",
-  },
-  {
-    id: 2,
-    date: "Aug 11, 2026",
-    day: "Tuesday",
-    timeIn: null,
-    timeOut: null,
-    hours: 0,
-    status: "absent",
-    office: "University Library - 2nd Flr",
-  },
-  {
-    id: 3,
-    date: "Aug 10, 2026",
-    day: "Monday",
-    timeIn: null,
-    timeOut: null,
-    hours: 0,
-    status: "absent",
-    office: "University Library - 2nd Flr",
-  },
-  {
-    id: 4,
-    date: "Aug 8, 2026",
-    day: "Saturday",
-    timeIn: "1:02 PM",
-    timeOut: "4:01 PM",
-    hours: 3.0,
-    status: "present",
-    office: "University Library - 2nd Flr",
-  },
-  {
-    id: 5,
-    date: "Aug 7, 2026",
-    day: "Friday",
-    timeIn: "1:20 PM",
-    timeOut: "4:00 PM",
-    hours: 2.7,
-    status: "late",
-    office: "IT Support Office - Rm 304",
-  },
-];
 
 const statusMeta: Record<
   AttendanceStatus,
@@ -165,7 +113,7 @@ export default function AttendanceScreen() {
   useEffect(() => {
     authenticatedRequest<{
       term: string;
-      logs: Array<{
+      logs: {
         log_id: number;
         date: string;
         day: string | null;
@@ -174,7 +122,7 @@ export default function AttendanceScreen() {
         hours: number;
         status: AttendanceStatus | "incomplete";
         office: string | null;
-      }>;
+      }[];
       unread_notifications: number;
     }>("/attendance_snapshot.php")
       .then((data) => {

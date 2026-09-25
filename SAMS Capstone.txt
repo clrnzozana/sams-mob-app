@@ -66,22 +66,22 @@ confirmed rather than assumed — but not blocking you from moving forward now.*
 - [x] Align schedule workflow to admin approval: student submits availability via web application,
       admin approves/declines duty schedules, and mobile app filters schedules under "Pending Approval",
       "Approved", "Deployed", and "Declined" without student accept/decline actions
-- [ ] Test token expiry/refresh behavior
-  - [ ] Confirm expired tokens trigger a proper logout or re-auth flow
-  - [ ] Verify the app does not silently show stale student data after token invalidation
-- [ ] Cross-check every screen's displayed data against actual database records for a real
+- [x] Test token expiry/refresh behavior
+  - [x] Confirm expired tokens trigger a proper logout or re-auth flow
+  - [x] Verify the app does not silently show stale student data after token invalidation
+- [x] Cross-check every screen's displayed data against actual database records for a real
       test student account
-  - [ ] Dashboard totals and recent activity
-  - [ ] Schedule assignments and status labels
-  - [ ] Attendance records and completion states
-  - [ ] Profile information and announcement visibility
-- [ ] Test on both Android and iOS devices/emulators
-  - [ ] Check layout consistency
-  - [ ] Confirm safe-area spacing and tab header alignment
-  - [ ] Verify notification and form interactions work on both platforms
-- [ ] Run a final bug sweep for edge cases: empty states, no internet, failed login, empty
+  - [x] Dashboard totals and recent activity
+  - [x] Schedule assignments and status labels
+  - [x] Attendance records and completion states
+  - [x] Profile information and announcement visibility
+- [x] Test on both Android and iOS devices/emulators
+  - [x] Check layout consistency
+  - [x] Confirm safe-area spacing and tab header alignment
+  - [x] Verify notification and form interactions work on both platforms
+- [x] Run a final bug sweep for edge cases: empty states, no internet, failed login, empty
       schedule, and invalid responses
-- [ ] Document all discovered issues and whether they are fixed, deferred, or marked as
+- [x] Document all discovered issues and whether they are fixed, deferred, or marked as
       known limitations — *this list doubles as real content for Chapter 5's limitations
       section, worth keeping thorough*
 

@@ -17,16 +17,15 @@ const CODE_LENGTH = 6;
 const RESEND_COOLDOWN = 30; // seconds
 
 export default function OtpVerificationScreen() {
-  const { challengeId, email, debugOtp } = useLocalSearchParams<{
+  const { challengeId, email } = useLocalSearchParams<{
     challengeId: string;
     email?: string;
-    debugOtp?: string;
   }>();
   const [digits, setDigits] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const [error, setError] = useState("");
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const inputRefs = useRef<Array<TextInput | null>>([]);
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   // Input fields must always start empty so user enters the OTP from their email
 
@@ -108,7 +107,7 @@ export default function OtpVerificationScreen() {
     setError("");
 
     try {
-      const response = await apiRequest<{
+      await apiRequest<{
         success: boolean;
         message?: string;
         debug_otp?: string;

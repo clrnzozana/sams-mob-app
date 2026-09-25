@@ -258,15 +258,15 @@ export default function ScheduleScreen() {
 
   useEffect(() => {
     authenticatedRequest<{
-      schedule: Array<{
+      schedule: {
         duty_id: number;
         office: string;
         day_of_week: string;
         start_time: string;
         end_time: string;
         status: "assigned" | "accepted" | "declined" | "deployed";
-      }>;
-      notes?: Array<ScheduleNote>;
+      }[];
+      notes?: ScheduleNote[];
       unread_notifications: number;
     }>("/api/mobile/schedule.php")
       .then((data) => {

@@ -1,4 +1,4 @@
-import { getAuthToken } from "@/constants/api";
+import { authenticatedRequest, getAuthToken } from "@/constants/api";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -18,7 +18,7 @@ import {
   Star,
   TrendingUp,
 } from "lucide-react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Animated,
@@ -35,7 +35,7 @@ import {
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 const LoadingScreen = () => {
-  const pulseAnim = useRef(new Animated.Value(0.9)).current;
+  const [pulseAnim] = useState(() => new Animated.Value(0.9));
 
   useEffect(() => {
     const animation = Animated.loop(
@@ -83,11 +83,11 @@ const LandingScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Staggered animation values
-  const fadeAnimHeader = useRef(new Animated.Value(0)).current;
-  const slideAnimTitle = useRef(new Animated.Value(20)).current;
-  const fadeAnimTitle = useRef(new Animated.Value(0)).current;
-  const slideAnimCTA = useRef(new Animated.Value(30)).current;
-  const fadeAnimCTA = useRef(new Animated.Value(0)).current;
+  const [fadeAnimHeader] = useState(() => new Animated.Value(0));
+  const [slideAnimTitle] = useState(() => new Animated.Value(20));
+  const [fadeAnimTitle] = useState(() => new Animated.Value(0));
+  const [slideAnimCTA] = useState(() => new Animated.Value(30));
+  const [fadeAnimCTA] = useState(() => new Animated.Value(0));
 
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
@@ -107,8 +107,13 @@ const LandingScreen = () => {
       const checkToken = async () => {
         const token = await getAuthToken();
         if (token) {
-          router.replace("/(tabs)/dashboard");
-          return;
+          try {
+            await authenticatedRequest("/student_dashboard_snapshot.php");
+            router.replace("/(tabs)/dashboard");
+            return;
+          } catch {
+            // Token is invalid/expired and has been cleared from storage
+          }
         }
         setIsLoading(false);
         SplashScreen.hideAsync().catch(() => undefined);
@@ -130,7 +135,7 @@ const LandingScreen = () => {
               toValue: 0,
               duration: 500,
               useNativeDriver: true,
-            })
+            }),
           ]),
           Animated.parallel([
             Animated.timing(fadeAnimCTA, {
@@ -142,16 +147,16 @@ const LandingScreen = () => {
               toValue: 0,
               duration: 500,
               useNativeDriver: true,
-            })
-          ])
+            }),
+          ]),
         ]).start();
       };
-      
+
       checkToken();
     }, 700);
 
     return () => clearTimeout(timer);
-  }, [fontsLoaded, fadeAnimHeader, slideAnimTitle, fadeAnimTitle, slideAnimCTA, fadeAnimCTA]);
+  }, [fontsLoaded, fadeAnimCTA, fadeAnimHeader, fadeAnimTitle, slideAnimCTA, slideAnimTitle]);
 
   if (!fontsLoaded || isLoading) {
     return <LoadingScreen />;

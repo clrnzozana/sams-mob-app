@@ -28,13 +28,13 @@ export default function AnnouncementsScreen() {
 
   useEffect(() => {
     authenticatedRequest<{
-      notifications: Array<{
+      notifications: {
         notification_id: number;
         title: string;
         message: string | null;
         created_at: string;
         is_read: boolean;
-      }>;
+      }[];
     }>("/announcements/list.php")
       .then((data) =>
         setAnnouncements(

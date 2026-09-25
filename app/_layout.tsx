@@ -1,7 +1,20 @@
-import { Stack } from "expo-router";
-import React from "react";
+import { onSessionExpired } from "@/constants/api";
+import { router, Stack } from "expo-router";
+import React, { useEffect } from "react";
+import { Alert } from "react-native";
 
 export default function RootLayout() {
+  useEffect(() => {
+    const unsubscribe = onSessionExpired(() => {
+      router.replace("/login");
+      Alert.alert(
+        "Session Expired",
+        "Your session has expired. Please log in again to continue.",
+      );
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />

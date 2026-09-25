@@ -95,6 +95,26 @@ export async function clearRememberedEmail(): Promise<void> {
   await SecureStore.deleteItemAsync("sams_remembered_email");
 }
 
+type SessionExpiredListener = () => void;
+const sessionExpiredListeners = new Set<SessionExpiredListener>();
+
+export function onSessionExpired(listener: SessionExpiredListener): () => void {
+  sessionExpiredListeners.add(listener);
+  return () => {
+    sessionExpiredListeners.delete(listener);
+  };
+}
+
+export function notifySessionExpired(): void {
+  sessionExpiredListeners.forEach((listener) => {
+    try {
+      listener();
+    } catch {
+      // ignore listener errors
+    }
+  });
+}
+
 export async function authenticatedRequest<T>(
   path: string,
   options: RequestInit = {},
@@ -105,11 +125,27 @@ export async function authenticatedRequest<T>(
     throw new Error("Please log in again.");
   }
 
-  return apiRequest<T>(path, {
-    ...options,
-    headers: {
-      ...options.headers,
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    return await apiRequest<T>(path, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const isAuthError =
+      message.includes("401") ||
+      message.toLowerCase().includes("authentication required") ||
+      message.toLowerCase().includes("please log in");
+
+    if (isAuthError) {
+      await clearAuthToken();
+      notifySessionExpired();
+      throw new Error("Your session has expired. Please log in again.");
+    }
+
+    throw error;
+  }
 }
